@@ -1,0 +1,454 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		35DD28CB17D0A868006379BB /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 35DD28CA17D0A868006379BB /* Security.framework */; };
+		75094919168EE1C8005409CA /* ovx_countdown_small.gif in Resources */ = {isa = PBXBuildFile; fileRef = 75094916168EE1C8005409CA /* ovx_countdown_small.gif */; };
+		7512A91818ED1484008E3738 /* ringtone.wav in Resources */ = {isa = PBXBuildFile; fileRef = 7512A91718ED1484008E3738 /* ringtone.wav */; };
+		75FCF86E168EBEE000C77896 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF86D168EBEE000C77896 /* UIKit.framework */; };
+		75FCF870168EBEE000C77896 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF86F168EBEE000C77896 /* Foundation.framework */; };
+		75FCF872168EBEE100C77896 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF871168EBEE000C77896 /* CoreGraphics.framework */; };
+		75FCF878168EBEE100C77896 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF876168EBEE100C77896 /* InfoPlist.strings */; };
+		75FCF87A168EBEE100C77896 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FCF879168EBEE100C77896 /* main.m */; };
+		75FCF87E168EBEE100C77896 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FCF87D168EBEE100C77896 /* AppDelegate.m */; };
+		75FCF880168EBEE100C77896 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF87F168EBEE100C77896 /* Default.png */; };
+		75FCF882168EBEE100C77896 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF881168EBEE100C77896 /* Default@2x.png */; };
+		75FCF884168EBEE100C77896 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF883168EBEE100C77896 /* Default-568h@2x.png */; };
+		75FCF887168EBEE100C77896 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 75FCF886168EBEE100C77896 /* ViewController.m */; };
+		75FCF88A168EBEE100C77896 /* ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF888168EBEE100C77896 /* ViewController.xib */; };
+		75FCF8AE168EC4B000C77896 /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF89E168EC4B000C77896 /* AddressBook.framework */; };
+		75FCF8AF168EC4B000C77896 /* AddressBookUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF89F168EC4B000C77896 /* AddressBookUI.framework */; };
+		75FCF8B0168EC4B000C77896 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A0168EC4B000C77896 /* AudioToolbox.framework */; };
+		75FCF8B1168EC4B000C77896 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A1168EC4B000C77896 /* AVFoundation.framework */; };
+		75FCF8B2168EC4B000C77896 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A2168EC4B000C77896 /* CFNetwork.framework */; };
+		75FCF8B3168EC4B000C77896 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A3168EC4B000C77896 /* CoreAudio.framework */; };
+		75FCF8B4168EC4B000C77896 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A4168EC4B000C77896 /* CoreData.framework */; };
+		75FCF8B5168EC4B000C77896 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A5168EC4B000C77896 /* CoreFoundation.framework */; };
+		75FCF8B6168EC4B000C77896 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A6168EC4B000C77896 /* CoreMedia.framework */; };
+		75FCF8B7168EC4B000C77896 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A7168EC4B000C77896 /* CoreVideo.framework */; };
+		75FCF8B8168EC4B000C77896 /* libresolv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A8168EC4B000C77896 /* libresolv.dylib */; };
+		75FCF8B9168EC4B000C77896 /* libsqlite3.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8A9168EC4B000C77896 /* libsqlite3.0.dylib */; };
+		75FCF8BA168EC4B000C77896 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8AA168EC4B000C77896 /* MessageUI.framework */; };
+		75FCF8BB168EC4B000C77896 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8AB168EC4B000C77896 /* OpenGLES.framework */; };
+		75FCF8BC168EC4B000C77896 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8AC168EC4B000C77896 /* QuartzCore.framework */; };
+		75FCF8BD168EC4B000C77896 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75FCF8AD168EC4B000C77896 /* SystemConfiguration.framework */; };
+		75FCF8BF168ED8B900C77896 /* openclove-color.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF8BE168ED8B900C77896 /* openclove-color.png */; };
+		75FCF8C4168ED9EB00C77896 /* openclove-57.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF8C0168ED9EB00C77896 /* openclove-57.png */; };
+		75FCF8C5168ED9EB00C77896 /* openclove-72.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF8C1168ED9EB00C77896 /* openclove-72.png */; };
+		75FCF8C6168ED9EB00C77896 /* openclove-114.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF8C2168ED9EB00C77896 /* openclove-114.png */; };
+		75FCF8C7168ED9EB00C77896 /* openclove-144.png in Resources */ = {isa = PBXBuildFile; fileRef = 75FCF8C3168ED9EB00C77896 /* openclove-144.png */; };
+		F4FB235318F8DCF800C52614 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 7512A91918ED15B7008E3738 /* libicucore.dylib */; };
+		F4FB235718F8E72D00C52614 /* libiosovx.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75094915168EE1C8005409CA /* libiosovx.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		35DD28CA17D0A868006379BB /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		75094915168EE1C8005409CA /* libiosovx.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libiosovx.a; sourceTree = "<group>"; };
+		75094916168EE1C8005409CA /* ovx_countdown_small.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = ovx_countdown_small.gif; sourceTree = "<group>"; };
+		75094917168EE1C8005409CA /* OVXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OVXView.h; sourceTree = "<group>"; };
+		7512A91718ED1484008E3738 /* ringtone.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ringtone.wav; sourceTree = "<group>"; };
+		7512A91918ED15B7008E3738 /* libicucore.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libicucore.dylib; path = usr/lib/libicucore.dylib; sourceTree = SDKROOT; };
+		75FCF869168EBEE000C77896 /* Engage Chat.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Engage Chat.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		75FCF86D168EBEE000C77896 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		75FCF86F168EBEE000C77896 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		75FCF871168EBEE000C77896 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		75FCF875168EBEE100C77896 /* engageChat-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "engageChat-Info.plist"; sourceTree = "<group>"; };
+		75FCF877168EBEE100C77896 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		75FCF879168EBEE100C77896 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		75FCF87B168EBEE100C77896 /* engageChat-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "engageChat-Prefix.pch"; sourceTree = "<group>"; };
+		75FCF87C168EBEE100C77896 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		75FCF87D168EBEE100C77896 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		75FCF87F168EBEE100C77896 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
+		75FCF881168EBEE100C77896 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
+		75FCF883168EBEE100C77896 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		75FCF885168EBEE100C77896 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		75FCF886168EBEE100C77896 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		75FCF889168EBEE100C77896 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController.xib; sourceTree = "<group>"; };
+		75FCF89E168EC4B000C77896 /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
+		75FCF89F168EC4B000C77896 /* AddressBookUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBookUI.framework; path = System/Library/Frameworks/AddressBookUI.framework; sourceTree = SDKROOT; };
+		75FCF8A0168EC4B000C77896 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		75FCF8A1168EC4B000C77896 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		75FCF8A2168EC4B000C77896 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		75FCF8A3168EC4B000C77896 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		75FCF8A4168EC4B000C77896 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		75FCF8A5168EC4B000C77896 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		75FCF8A6168EC4B000C77896 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		75FCF8A7168EC4B000C77896 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		75FCF8A8168EC4B000C77896 /* libresolv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libresolv.dylib; path = usr/lib/libresolv.dylib; sourceTree = SDKROOT; };
+		75FCF8A9168EC4B000C77896 /* libsqlite3.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.0.dylib; path = usr/lib/libsqlite3.0.dylib; sourceTree = SDKROOT; };
+		75FCF8AA168EC4B000C77896 /* MessageUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MessageUI.framework; path = System/Library/Frameworks/MessageUI.framework; sourceTree = SDKROOT; };
+		75FCF8AB168EC4B000C77896 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		75FCF8AC168EC4B000C77896 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		75FCF8AD168EC4B000C77896 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		75FCF8BE168ED8B900C77896 /* openclove-color.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openclove-color.png"; sourceTree = "<group>"; };
+		75FCF8C0168ED9EB00C77896 /* openclove-57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openclove-57.png"; sourceTree = "<group>"; };
+		75FCF8C1168ED9EB00C77896 /* openclove-72.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openclove-72.png"; sourceTree = "<group>"; };
+		75FCF8C2168ED9EB00C77896 /* openclove-114.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openclove-114.png"; sourceTree = "<group>"; };
+		75FCF8C3168ED9EB00C77896 /* openclove-144.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "openclove-144.png"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		75FCF866168EBEE000C77896 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F4FB235718F8E72D00C52614 /* libiosovx.a in Frameworks */,
+				F4FB235318F8DCF800C52614 /* libicucore.dylib in Frameworks */,
+				35DD28CB17D0A868006379BB /* Security.framework in Frameworks */,
+				75FCF8AE168EC4B000C77896 /* AddressBook.framework in Frameworks */,
+				75FCF8AF168EC4B000C77896 /* AddressBookUI.framework in Frameworks */,
+				75FCF8B0168EC4B000C77896 /* AudioToolbox.framework in Frameworks */,
+				75FCF8B1168EC4B000C77896 /* AVFoundation.framework in Frameworks */,
+				75FCF8B2168EC4B000C77896 /* CFNetwork.framework in Frameworks */,
+				75FCF8B3168EC4B000C77896 /* CoreAudio.framework in Frameworks */,
+				75FCF8B4168EC4B000C77896 /* CoreData.framework in Frameworks */,
+				75FCF8B5168EC4B000C77896 /* CoreFoundation.framework in Frameworks */,
+				75FCF8B6168EC4B000C77896 /* CoreMedia.framework in Frameworks */,
+				75FCF8B7168EC4B000C77896 /* CoreVideo.framework in Frameworks */,
+				75FCF8B8168EC4B000C77896 /* libresolv.dylib in Frameworks */,
+				75FCF8B9168EC4B000C77896 /* libsqlite3.0.dylib in Frameworks */,
+				75FCF8BA168EC4B000C77896 /* MessageUI.framework in Frameworks */,
+				75FCF8BB168EC4B000C77896 /* OpenGLES.framework in Frameworks */,
+				75FCF8BC168EC4B000C77896 /* QuartzCore.framework in Frameworks */,
+				75FCF8BD168EC4B000C77896 /* SystemConfiguration.framework in Frameworks */,
+				75FCF872168EBEE100C77896 /* CoreGraphics.framework in Frameworks */,
+				75FCF86E168EBEE000C77896 /* UIKit.framework in Frameworks */,
+				75FCF870168EBEE000C77896 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		75094914168EE1C8005409CA /* iosovx */ = {
+			isa = PBXGroup;
+			children = (
+				75094915168EE1C8005409CA /* libiosovx.a */,
+				75094916168EE1C8005409CA /* ovx_countdown_small.gif */,
+				75094917168EE1C8005409CA /* OVXView.h */,
+			);
+			path = iosovx;
+			sourceTree = "<group>";
+		};
+		75FCF85E168EBEE000C77896 = {
+			isa = PBXGroup;
+			children = (
+				35DD28CA17D0A868006379BB /* Security.framework */,
+				75094914168EE1C8005409CA /* iosovx */,
+				75FCF873168EBEE100C77896 /* engageChat */,
+				75FCF86C168EBEE000C77896 /* Frameworks */,
+				75FCF86A168EBEE000C77896 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		75FCF86A168EBEE000C77896 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				75FCF869168EBEE000C77896 /* Engage Chat.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		75FCF86C168EBEE000C77896 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7512A91918ED15B7008E3738 /* libicucore.dylib */,
+				75FCF89E168EC4B000C77896 /* AddressBook.framework */,
+				75FCF89F168EC4B000C77896 /* AddressBookUI.framework */,
+				75FCF8A0168EC4B000C77896 /* AudioToolbox.framework */,
+				75FCF8A1168EC4B000C77896 /* AVFoundation.framework */,
+				75FCF8A2168EC4B000C77896 /* CFNetwork.framework */,
+				75FCF8A3168EC4B000C77896 /* CoreAudio.framework */,
+				75FCF8A4168EC4B000C77896 /* CoreData.framework */,
+				75FCF8A5168EC4B000C77896 /* CoreFoundation.framework */,
+				75FCF8A6168EC4B000C77896 /* CoreMedia.framework */,
+				75FCF8A7168EC4B000C77896 /* CoreVideo.framework */,
+				75FCF8A8168EC4B000C77896 /* libresolv.dylib */,
+				75FCF8A9168EC4B000C77896 /* libsqlite3.0.dylib */,
+				75FCF8AA168EC4B000C77896 /* MessageUI.framework */,
+				75FCF8AB168EC4B000C77896 /* OpenGLES.framework */,
+				75FCF8AC168EC4B000C77896 /* QuartzCore.framework */,
+				75FCF8AD168EC4B000C77896 /* SystemConfiguration.framework */,
+				75FCF86D168EBEE000C77896 /* UIKit.framework */,
+				75FCF86F168EBEE000C77896 /* Foundation.framework */,
+				75FCF871168EBEE000C77896 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		75FCF873168EBEE100C77896 /* engageChat */ = {
+			isa = PBXGroup;
+			children = (
+				75FCF87C168EBEE100C77896 /* AppDelegate.h */,
+				75FCF87D168EBEE100C77896 /* AppDelegate.m */,
+				75FCF885168EBEE100C77896 /* ViewController.h */,
+				75FCF886168EBEE100C77896 /* ViewController.m */,
+				75FCF888168EBEE100C77896 /* ViewController.xib */,
+				75FCF874168EBEE100C77896 /* Supporting Files */,
+			);
+			path = engageChat;
+			sourceTree = "<group>";
+		};
+		75FCF874168EBEE100C77896 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7512A91718ED1484008E3738 /* ringtone.wav */,
+				75FCF8BE168ED8B900C77896 /* openclove-color.png */,
+				75FCF8C0168ED9EB00C77896 /* openclove-57.png */,
+				75FCF8C1168ED9EB00C77896 /* openclove-72.png */,
+				75FCF8C2168ED9EB00C77896 /* openclove-114.png */,
+				75FCF8C3168ED9EB00C77896 /* openclove-144.png */,
+				75FCF875168EBEE100C77896 /* engageChat-Info.plist */,
+				75FCF876168EBEE100C77896 /* InfoPlist.strings */,
+				75FCF879168EBEE100C77896 /* main.m */,
+				75FCF87B168EBEE100C77896 /* engageChat-Prefix.pch */,
+				75FCF87F168EBEE100C77896 /* Default.png */,
+				75FCF881168EBEE100C77896 /* Default@2x.png */,
+				75FCF883168EBEE100C77896 /* Default-568h@2x.png */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		75FCF868168EBEE000C77896 /* engageChat */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 75FCF88D168EBEE100C77896 /* Build configuration list for PBXNativeTarget "engageChat" */;
+			buildPhases = (
+				75FCF865168EBEE000C77896 /* Sources */,
+				75FCF866168EBEE000C77896 /* Frameworks */,
+				75FCF867168EBEE000C77896 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = engageChat;
+			productName = OVXIOSExample;
+			productReference = 75FCF869168EBEE000C77896 /* Engage Chat.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		75FCF860168EBEE000C77896 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0450;
+				ORGANIZATIONNAME = OpenClove;
+			};
+			buildConfigurationList = 75FCF863168EBEE000C77896 /* Build configuration list for PBXProject "engageChat" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 75FCF85E168EBEE000C77896;
+			productRefGroup = 75FCF86A168EBEE000C77896 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				75FCF868168EBEE000C77896 /* engageChat */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		75FCF867168EBEE000C77896 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75FCF878168EBEE100C77896 /* InfoPlist.strings in Resources */,
+				75FCF880168EBEE100C77896 /* Default.png in Resources */,
+				7512A91818ED1484008E3738 /* ringtone.wav in Resources */,
+				75FCF882168EBEE100C77896 /* Default@2x.png in Resources */,
+				75FCF884168EBEE100C77896 /* Default-568h@2x.png in Resources */,
+				75FCF88A168EBEE100C77896 /* ViewController.xib in Resources */,
+				75FCF8BF168ED8B900C77896 /* openclove-color.png in Resources */,
+				75FCF8C4168ED9EB00C77896 /* openclove-57.png in Resources */,
+				75FCF8C5168ED9EB00C77896 /* openclove-72.png in Resources */,
+				75FCF8C6168ED9EB00C77896 /* openclove-114.png in Resources */,
+				75FCF8C7168ED9EB00C77896 /* openclove-144.png in Resources */,
+				75094919168EE1C8005409CA /* ovx_countdown_small.gif in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		75FCF865168EBEE000C77896 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				75FCF87A168EBEE100C77896 /* main.m in Sources */,
+				75FCF87E168EBEE100C77896 /* AppDelegate.m in Sources */,
+				75FCF887168EBEE100C77896 /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		75FCF876168EBEE100C77896 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				75FCF877168EBEE100C77896 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		75FCF888168EBEE100C77896 /* ViewController.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				75FCF889168EBEE100C77896 /* en */,
+			);
+			name = ViewController.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		75FCF88B168EBEE100C77896 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"ARCHS[sdk=*]" = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: INDUSFACE TELECOM, INC";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "OVX Example";
+				PROVISIONING_PROFILE = "7370A3AC-F3EA-4546-8DE6-C4E9DE64A9CB";
+				SDKROOT = iphoneos;
+				VALID_ARCHS = "";
+			};
+			name = Debug;
+		};
+		75FCF88C168EBEE100C77896 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				"ARCHS[sdk=*]" = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = NO;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: INDUSFACE TELECOM, INC";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				OTHER_LDFLAGS = (
+					"-lstdc++",
+					"-ObjC",
+				);
+				PRODUCT_NAME = "OVX Example";
+				PROVISIONING_PROFILE = "7370A3AC-F3EA-4546-8DE6-C4E9DE64A9CB";
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "";
+			};
+			name = Release;
+		};
+		75FCF88E168EBEE100C77896 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"ARCHS[sdk=*]" = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: INDUSFACE TELECOM, INC";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "engageChat/engageChat-Prefix.pch";
+				INFOPLIST_FILE = "engageChat/engageChat-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/iosovx",
+					"/Users/siddharth/Documents/OVXExample-IOS-v2-UsingOPX/iosovx",
+					"$(PROJECT_DIR)/iosovx",
+				);
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_NAME = "Engage Chat";
+				PROVISIONING_PROFILE = "7370A3AC-F3EA-4546-8DE6-C4E9DE64A9CB";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		75FCF88F168EBEE100C77896 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: INDUSFACE TELECOM, INC";
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "engageChat/engageChat-Prefix.pch";
+				INFOPLIST_FILE = "engageChat/engageChat-Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/iosovx",
+					"/Users/siddharth/Documents/OVXExample-IOS-v2-UsingOPX/iosovx",
+					"$(PROJECT_DIR)/iosovx",
+				);
+				PRODUCT_NAME = "Engage Chat";
+				PROVISIONING_PROFILE = "7370A3AC-F3EA-4546-8DE6-C4E9DE64A9CB";
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = "armv6 armv7";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		75FCF863168EBEE000C77896 /* Build configuration list for PBXProject "engageChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75FCF88B168EBEE100C77896 /* Debug */,
+				75FCF88C168EBEE100C77896 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		75FCF88D168EBEE100C77896 /* Build configuration list for PBXNativeTarget "engageChat" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75FCF88E168EBEE100C77896 /* Debug */,
+				75FCF88F168EBEE100C77896 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 75FCF860168EBEE000C77896 /* Project object */;
+}

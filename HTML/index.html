@@ -1,0 +1,181 @@
+<!--
+/*
+ *
+ * Applictaion Name  : engageChat
+ * File Name  : index.html
+ * Version Name  :1.1.0
+ * Date       : 20140414
+ * Description  : Copyright (coffee) 2014 OpenClove. All rights reserved.
+ *
+ *
+ */
+-->
+
+<?php
+
+$uagent = $_SERVER['HTTP_USER_AGENT'];
+
+$ie = false;
+
+error_log("USER AGENT is " .$uagent);
+if(strstr($uagent,'MSIE') || strstr($uagent,'msie') ||  strstr($uagent,'Trident'))
+$ie = true;
+
+
+if(stripos($uagent, 'Android') !== false &&  stripos($uagent, 'Chrome') !== false){}
+else if((stristr($uagent, 'Firefox') === FALSE)&&($ie==false))
+{
+	if((stristr($_SERVER['HTTP_HOST'], 'ovx.me') != FALSE) )
+	{
+		if(!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] == ""){
+			$redirect = "https://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+			header("Location: $redirect");
+		}
+	}
+}
+else if(stristr($uagent, 'firefox') != FALSE)
+{
+
+	if(isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != ""){
+		$redirect = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		header("Location: $redirect");
+	}
+}
+else if($ie) 
+{         
+
+	if(isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != ""){
+		$redirect = "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI'];
+		header("Location: $redirect");
+	}    
+
+}
+
+?>
+<!DOCTYPE html PUBLIC "-//IETF//DTD HTML//EN">
+<!-- saved from url=(0057)http://www.corp.google.com/~grunell/webrtc_test_jsep.html -->
+<html>
+<head>
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+<link rel='stylesheet' href='//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css'>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="css/dialogbox.css">
+
+<script src="js/app.js"></script>
+
+
+<meta charset=utf-8>
+<title>OpenClove Engage Player</title>
+
+<script>
+/*** BEGIN OPX OpenClove Peer Exchange EMBED CODE ***/
+
+(function(d, w) {
+ var x = d.getElementsByTagName('SCRIPT')[0];
+ var f = function() {
+ var s = d.createElement('SCRIPT');
+ s.type = 'text/javascript';
+ s.src = '//ovx.me/opxembed/opx-embed-full.js?v1.1';
+ x.parentNode.insertBefore(s, x);
+ };
+ w.attachEvent ? w.attachEvent('onload', f) : w.addEventListener('load', f, false);
+ }(document, window));
+
+/*** END OPX Embed Code ***/
+
+
+
+/*** BEGIN OVX Live Player  EMBED CODE ***/
+(function(d, w) {
+ var x = d.getElementsByTagName('SCRIPT')[0];
+ var f = function () {
+ var s = d.createElement('SCRIPT');
+ s.type = 'text/javascript';
+ s.setAttribute('ovx-widget','ovxplayer');           // Mandatory Param
+ s.setAttribute('ovx-apikey','jmbyzaurgsq2qfqgyrt6ct8m');                // Mandatory Param
+ s.setAttribute('ovx-name',"<?php echo $userName; ?>");                 // Mandatory Param       	    
+ s.setAttribute('ovx-session',"<?php echo $sessionID; ?>"); // Mandatory
+ s.setAttribute('ovx-render','embed');  // embed or popup
+ s.setAttribute('ovx-chat','disable'); // enable or disable
+ s.setAttribute('ovx-autoclose', 'false');
+
+ s.src = "//ovx.me/ovxplayer/ovx-embed-ovxplayer.js?v2";
+
+ x.parentNode.insertBefore(s, x);
+ };  
+ w.attachEvent ? w.attachEvent('onload', f) : w.addEventListener('load', f, false);
+ }(document, window));
+/*** END OVX Live Player  EMBED CODE ***/
+
+
+</script> 
+</head>
+
+<body onload="mainLaunchUrl=window.location.href;" style="background:#333;">
+<div style="position:fixed;top:20px;right:50px;color:#DDD;"><a href="view-source:http://freemad.org/engageChat/" target="_blank">View Source</a><br/><a href="https://github.com/OpenCloveDeveloper/engageChat-html" target="_blank">Download from Github</a></div>
+<center>
+
+<audio loop id="ring">
+<source src="beep.mp3" type="audio/mpeg">
+<embed height="50" width="100" src="beep.mp3">
+</audio>
+
+<div id="dialogoverlay"></div>
+<div id="dialogbox" style="color:white;">
+<h5>Incoming Call ... </h5>
+<br>
+<button type="button" class="btn btn-danger" onclick="ignoreCall();">Ignore</button>
+
+<button type="button" class="btn btn-primary" onclick="answerCall();">Answer</button>
+
+</div>
+
+<p style="position:absolute;z-index:999999;margin:0px;bottom:0px;right:5px;color:white;text-shadow:none;display:none;">Powered By OpenClove</p>
+<div id="menuContainer" style="position:relative;display:block;width:240px;height:240px;">
+
+<div>
+<p style="display:none;float:center;text-shadow:none;font-size:12px;color:white;" id="noWebRTCWarning"><br>Sorry, Video Chat is not available on this browser. Please use a <a href="//ovx.me/device_check" class="ui-link">supported browser</a> or enter your phone number to connect.</p>
+
+
+<br>
+<center>
+<div class="input-group" style="margin-bottom:3px;">
+<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+<input class="form-control" type="text" placeholder="Enter Name (Optional)" id="username">
+</div>
+<div class="input-group" style="margin-bottom:3px;">
+<span class="input-group-addon"><i id="registerStatus" style="color:#CC0000;" class="fa fa-circle-o fa-fw"></i></span>
+<input class="form-control" type="text" placeholder="Enter Email (Required)" id="userid">
+</div>
+</center>
+
+</div>
+<a style="width:100%;margin-bottom:3px;" id="registerButton" onclick="registerPressed();" class="btn btn-lg btn-warning" href="#">
+<i id="registerButtonStatus" class="fa fa-2x fa-sign-in pull-right"></i> <p style="margin-top:5px;">Click here to Sign-In</p>
+</a>
+
+<div id="inviteDialog" style="display:none;">
+<hr/>
+<div class="input-group" style="margin-bottom:3px;">
+<span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+<input class="form-control" type="text" placeholder="Enter User ID to Invite" id="invitee">
+</div>
+
+<a style="width:100%;margin-bottom:3px;" id="inviteButton" class="btn btn-lg btn-success" href="#" onclick="invitePressed();">
+<i id="inviteButtonStatus" class="fa fa-2x fa-share-square-o pull-right"></i> <p id="inviteButtonText" style="margin-top:5px;">Invite</p>
+</a>
+
+</div>
+<p id='status'>Status Messages <br/></p>
+<br>
+</div>
+<div id='ovx-player' style='display:none;width:320px; height:300px;'></div>
+</center>
+
+
+
+</body>
+</html>
