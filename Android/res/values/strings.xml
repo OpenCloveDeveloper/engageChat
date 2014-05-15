@@ -1,0 +1,12 @@
+<resources>
+
+    <string name="app_name">Engage Chat</string>
+    <string name="openclove">Welcome to openclove</string>
+    <string name="oc">OpenClove</string>
+    <string name="ovxeg">Engage Chat</string>  
+    <string name="openclove_desc">Click on the icon at the top right corner to start call</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">Engage Chat</string>
+	<string name="call_start">Enter Conference</string>
+	<string name="end_call">Exit Conference</string>
+</resources>

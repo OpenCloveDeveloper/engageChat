@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" 
+    android:background="#808080"
+    android:layout_centerHorizontal="true">
+
+    <LinearLayout
+        android:id="@+id/composite_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+         >
+
+        <Button
+            android:id="@+id/composite_layer"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:text="Composite Layer" >
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout1"
+        android:layout_below="@+id/composite_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" >
+
+        <Button
+            android:id="@+id/layer1"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="Layer1" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer2"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer2" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer3"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer3" >
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout2"
+        android:layout_below="@+id/layout1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true" >
+
+        <Button
+            android:id="@+id/layer4"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer4" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer5"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer5" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer6"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer6" >
+        </Button>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout3"
+        android:layout_below="@+id/layout2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" 
+        android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/layer7"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer7" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer8"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer8" >
+        </Button>
+
+        <Button
+            android:id="@+id/layer9"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:text="layer9" >
+        </Button>
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/cancel_layout"
+        android:layout_below="@+id/layout3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+         >
+
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="250dp"
+            android:layout_height="80dp"
+            android:text="Cancel" >
+        </Button>
+    </LinearLayout>
+
+</RelativeLayout>

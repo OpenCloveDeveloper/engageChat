@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+ <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"  
+   android:layout_width="fill_parent"  
+   android:layout_height="fill_parent"  
+   android:gravity="center"  
+   android:orientation="horizontal"
+   android:background="#FFFFFF" >  
+   <!--  TextView  
+     android:id="@+id/textView1"  
+     android:layout_width="wrap_content"  
+     android:layout_height="wrap_content"  
+     android:gravity="center"  
+     android:text="DJ notification"  
+     android:textAppearance="?android:attr/textAppearanceMedium" /-->
+     
+   <Button  
+     android:id="@+id/button1"  
+     android:layout_width="wrap_content"  
+     android:layout_height="wrap_content"  
+     android:text="Answer" 
+     android:background="#339966"/>
+   <Button  
+     android:id="@+id/button2"  
+     android:layout_width="wrap_content"  
+     android:layout_height="wrap_content"  
+     android:layout_marginLeft="4dp"
+     android:text="Reject" 
+     android:background="#990000"/>  
+ </LinearLayout> 

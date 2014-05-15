@@ -1,0 +1,199 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#808080" >
+
+    <RelativeLayout
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true"
+        android:background="@drawable/gradient_bar"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/openclove"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:text="@string/oc"
+            android:textColor="@android:color/black"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/openclove"
+            android:layout_centerHorizontal="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="true"
+            android:text="@string/ovxeg"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <ScrollView
+        android:id="@+id/scroll_layout"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:layout_below="@+id/title"
+        android:fillViewport="true" >
+
+        <RelativeLayout
+            android:id="@+id/maininscroll"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#808080" >
+
+            <RelativeLayout
+                android:id="@+id/chat_control"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#808080"
+                 >
+
+                <ImageView
+                    android:id="@+id/openclove_icon"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_marginTop="5dp"
+                    android:background="@null"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/openclove_icon" />
+
+                <LinearLayout
+                    android:id="@+id/layview"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/openclove_icon"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:orientation="vertical" >
+
+                    <EditText
+                        android:id="@+id/disp_name"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter Name (Optional)"
+                        android:imeOptions="actionSend"
+                        android:inputType="text"
+                        android:scrollbars="horizontal"
+                        android:textColor="#0000" 
+                        android:ellipsize="middle"/>
+                    
+                    <EditText
+                        android:id="@+id/chat_text"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="2dp"
+                        android:hint="Enter Email or Phone # (Required)"
+                        android:imeOptions="actionSend"
+                        android:inputType="text"
+                        android:scrollbars="horizontal"
+                        android:textColor="#0000" 
+                        android:ellipsize="middle"/>
+
+                    <Button
+                        android:id="@+id/reg_btn"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#6699CC"
+                        android:textSize="16sp"
+                        android:text="Register" />
+
+                    <LinearLayout
+                        
+                        android:layout_width="300dp"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal" 
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="30dp"
+                        >
+                    <EditText
+                        android:id="@+id/app"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:hint="Enter User Id to Invite"
+                        android:imeOptions="actionSend"
+                        android:inputType="text"
+                        android:scrollbars="horizontal"
+                        android:textSize="15sp"
+                        android:textColor="#0000"
+                        android:visibility="visible" 
+                        android:layout_weight="0.15"
+                        android:ellipsize="end"/>
+
+                    <Button
+                        android:id="@+id/invite"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="3dp"
+                        android:layout_marginRight="4dp"
+                    	android:textColor="@android:color/white"
+                        android:layout_marginTop="10dp"
+                        android:background="#003300"
+                        android:text="Invite"
+                        android:textSize="16sp"
+                        android:visibility="visible"
+                        android:layout_weight="0.20" />
+                    </LinearLayout>
+                    <Button
+                        android:id="@+id/pick"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#003300"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:text="Invite Using Contacts" />
+                    
+                     <Button
+                        android:id="@+id/end_btn"
+                        android:layout_width="300dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:layout_marginTop="10dp"
+                        android:background="#CC0000"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:visibility="invisible"
+                        android:text="End Call" />
+
+                    
+                </LinearLayout>
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/chat_text_box"
+                android:layout_width="match_parent"
+                android:layout_height="250dp"
+                android:layout_below="@+id/chat_control"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="10dp"
+                android:background="#C0C0C0"
+                android:hint="@string/openclove"
+                android:scrollbars="vertical"
+                android:textColor="#0000" />
+        </RelativeLayout>
+    </ScrollView>
+
+</RelativeLayout>
