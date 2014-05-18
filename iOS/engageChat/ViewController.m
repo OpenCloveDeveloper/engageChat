@@ -42,33 +42,6 @@
     ovxView.delegate = self;
     [self configureOVXPlayer];
 
-    /* Get Username from stored Default */
-    username = [[NSUserDefaults standardUserDefaults] objectForKey:@"USERNAME"];
-    
-    if((username == nil) || (username.length<3))
-    {
-        if (usernameField.text)
-            username = [[NSString alloc] initWithString:usernameField.text];
-        else
-            username = @"";
-
-    }
-    else
-        usernameField.text = username;
-    
-    /* Connect to the OpenClove Peer Exchange Service to Register */
-    
-    if([ovxView ovxView_OPXSocket])
-        [self sendOpxRegister];
-    else
-        [ovxView ovxView_OPXconnect];
-
-    /*
-    [NSTimer scheduledTimerWithTimeInterval: 4.0
-                                     target: self
-                                   selector:@selector(sendOpxRegister)
-                                   userInfo: nil repeats:NO]; 
-     */
     
     /* Add the ovxView to the current View, and keep it Hidden */
     [self.view addSubview:ovxView];
@@ -95,6 +68,30 @@
 
 - (void)appDidEnterForeground:(NSNotification *)notification {
     NSLog(@"engageChat did enter foreground notification");
+}
+
+-(void) opxInitiateRegister
+{
+    /* Get Username from stored Default */
+    username = [[NSUserDefaults standardUserDefaults] objectForKey:@"USERNAME"];
+    
+    if((username == nil) || (username.length<3))
+    {
+        if (usernameField.text)
+            username = [[NSString alloc] initWithString:usernameField.text];
+        else
+            username = @"";
+        
+    }
+    else
+        usernameField.text = username;
+    
+    /* Connect to the OpenClove Peer Exchange Service to Register */
+    
+    if([ovxView ovxView_OPXSocket])
+        [self sendOpxRegister];
+    else
+        [ovxView ovxView_OPXconnect];
 }
 
 -(void) configureOVXPlayer
@@ -174,6 +171,8 @@
   
     
     [ovxView launch];
+    
+    [self opxInitiateRegister];
     
 }
 
