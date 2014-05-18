@@ -649,7 +649,7 @@
     else
         [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
     
-    [self sendOPXApplicationInviteMessage];
+    [self sendOPXApplicationInviteMessage:peerUsername];
 
     
 }
@@ -935,10 +935,10 @@
     
 }
 
-- (void) sendOPXApplicationInviteMessage
+- (void) sendOPXApplicationInviteMessage:(NSString*) pname
 {
     
-    NSString *toUser = [NSString stringWithFormat:@"myAPIKey:%@", peerUsername];
+    NSString *toUser = [NSString stringWithFormat:@"myAPIKey:%@", pname];
     NSString *idStr = [NSString stringWithFormat:@"myAPIKey:%@", username];
   
     if(!ovxView.isCallOn)
@@ -1399,7 +1399,7 @@
         else
             [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
         
-        [self sendOPXApplicationInviteMessage];
+        [self sendOPXApplicationInviteMessage:peerUsername];
         
         
         return NO;
@@ -1441,7 +1441,7 @@
         else
             [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
         
-        [self sendOPXApplicationInviteMessage];
+        [self sendOPXApplicationInviteMessage:peerUsername];
 
         
         return NO;
