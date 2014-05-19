@@ -352,7 +352,7 @@
     NSLog(@"OVX : Call Terminated");
     
    [logview setText:@""];
-   [logview setText:@"Welcome to Openclove"];
+   [logview setText:@"Welcome to Openclove\n"];
     endCallButton.hidden = TRUE;
 
     
@@ -371,7 +371,7 @@
 {
     NSLog(@"OVX : Call Failed : %@",message);
     [logview setText:@""];
-    [logview setText:@"Welcome to Openclove"];
+    [logview setText:@"Welcome to Openclove\n"];
     
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:ovxView.title
                                                     message:message
@@ -413,31 +413,24 @@
     {
         NSLog(@" Info from %@: %@ :%@", type, sender,  [self urldecode:content]);
         
-        [logview setText:[NSString stringWithFormat:@"%@\nInfo -- %@: %@", logview.text,  sender, content]];
-        
     }else if ([type isEqualToString:@"control"]) //Control information showing the current status of video View 
     {
         NSLog(@" Control Info %@: %@ :%@", type, sender,  [self urldecode:content]);
-        
-        [logview setText:[NSString stringWithFormat:@"%@\nControl -- %@: %@", logview.text,  sender, content]];
         
     }else if([type isEqualToString:@"participants"])// informations related participants in Group Chat
     {
         NSLog(@" Participants  %@: %@ :%@", type, sender,  [self urldecode:content]);
         
-        [logview setText:[NSString stringWithFormat:@"%@\nParticipants -- %@: %@", logview.text,  sender, content]];
     }
     else if([type isEqualToString:@"chat"]) //chat messages received from other participants 
     {
         NSLog(@" Chat  %@: %@ :%@", type, sender,  [self urldecode:content]);
         
-        [logview setText:[NSString stringWithFormat:@"%@\n Chat -- %@: %@", logview.text,  sender, content]];
     }
     else 
     {
         NSLog(@"Live App Data from %@: %@ :%@", sender, type , [self urldecode:content]);
     
-        [logview setText:[NSString stringWithFormat:@"%@\n%@ -- %@: %@", logview.text, type, sender, content]];
     }
   }
     
@@ -457,9 +450,6 @@
         
         [dict setObject:val forKey:key];
     }
-    
-    
-    [logview setText:[NSString stringWithFormat:@"%@\n Received Event %@: %@  ", logview.text, dict[@"type"], dict[@"data"]]];
 
 }
 
@@ -592,8 +582,8 @@
     
     AudioServicesDisposeSystemSoundID(ringtoneSoundID);
     
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite Request accepted by peer %@", logview.text, peerUsername]];
-
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite Request accepted by %@", peerUsername]];
+    
     if([title isEqualToString:@"Answer"])      // invite request accepted
     {
         [self cancelTimerAndAccept];
@@ -602,7 +592,8 @@
     else if([title isEqualToString:@"Reject"])      // invite request rejected
     {
         [inviteRecvdTimer invalidate]; inviteRecvdTimer = nil;
-        [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite Request rejected by peer %@", logview.text, peerUsername]];
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite Request rejected by %@", peerUsername]];
+
         [self sendOPXApplicationInviteRejectedMessage];
     }
     
@@ -641,7 +632,8 @@
     }
     peerUsername = [[NSString alloc] initWithString:peernameField.text];
     
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Inviting %@", logview.text, peerUsername]];
+    
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Inviting %@", peerUsername]];
 
     
     if(displaynameField.text.length>0)
@@ -714,10 +706,6 @@
     
     int rc=[ovxView ovxView_sendOPXMessage:msgString];
     
-    if(rc==-1)
-        [logview setText:[NSString stringWithFormat:@"%@Sending OPX-%@", logview.text, @"REGISTER  FAILED"]];
-    else
-        [logview setText:[NSString stringWithFormat:@"%@Sending OPX-%@", logview.text, @"REGISTER"]];
 }
 
 -(void) processOPXInviteRequest
@@ -788,7 +776,8 @@
 {
     NSLog(@"CancelTimeAndAccept");
     [inviteRecvdTimer invalidate]; inviteRecvdTimer = nil;
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite Request accepted by peer %@", logview.text, peerUsername]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite Request accepted by %@", peerUsername]];
+    
     AudioServicesDisposeSystemSoundID(ringtoneSoundID);
 
     [self sendOPXApplicationInviteAcceptedMessage];
@@ -834,7 +823,7 @@
                                               selector:@selector(msgTimerTicked)
                                               userInfo: [NSDictionary dictionaryWithObject:messageId forKey:@"msgId"] repeats:NO];
     
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite from %@ accepted ", logview.text, peerUsername]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite from %@ accepted ", peerUsername]];
     
 
     
@@ -882,7 +871,8 @@
     NSLog(@"String: %@", msgString);
     
     [ovxView ovxView_sendOPXMessage:msgString];
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite from %@ rejected ", logview.text, peerUsername]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite from %@ rejected ", peerUsername]];
+    
      NSString *messageId = [[NSString alloc] initWithString:msgId];
     if([msgTimer isValid])
         [msgTimer invalidate];
@@ -924,7 +914,8 @@
     NSLog(@"String: %@", msgString);
     
     [ovxView ovxView_sendOPXMessage:msgString];
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- Invite from %@ Expired ", logview.text, peerUsername]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- Invite from %@ Expired\n", peerUsername]];
+    
     NSString *messageId = [[NSString alloc] initWithString:msgId];
     if([msgTimer isValid])
         [msgTimer invalidate];
@@ -984,7 +975,7 @@
     
     NSLog(@"String: %@", msgString);
     
-    [logview setText:[NSString stringWithFormat:@"%@ \n Sending OPX-%@", logview.text, @"INVITE_REQUEST"]];
+    [self updateActivityLog:[NSString stringWithFormat:@"Sending OPX Invite Request to %@", pname]];
 
     
     [ovxView ovxView_sendOPXMessage:msgString];
@@ -1039,7 +1030,8 @@
     
     NSString *msgId = [[inviteSentTimer userInfo] valueForKey:@"msgId"];
     NSLog (@"Invite Timer ticked : Msg Id: %@", msgId);
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX- No Response from user %@", logview.text, peerUsername]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX- No Response from user %@", peerUsername]];
+    
     inviteSentTimer = nil;
     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Engage Chat"
                                                     message:@"No repsonse from peer"
@@ -1102,7 +1094,6 @@
         NSLog(@"session id: %@", sessionId);
          NSString *msgId = jsonObject[@"msgId"];
         
-        [logview setText:[NSString stringWithFormat:@"%@\nReceived OPX-%@", logview.text, msg_type]];
         if([msg_type isEqualToString:@"INVITE_REQUEST"])
         {
             NSString *fromUser = jsonObject[@"fromid"];
@@ -1110,6 +1101,9 @@
             fromUser = stringArray[1];
             peerUsername = [[NSString alloc] initWithString:fromUser];
             [self processOPXInviteRequest];
+            
+            [self updateActivityLog:[NSString stringWithFormat:@"Received OPX Invite Request from %@", peerUsername]];
+
         }
         else if([msg_type isEqualToString:@"INVITE_ACCEPTED"])
         {
@@ -1229,7 +1223,8 @@
             return;
         }
         
-        [logview setText:[NSString stringWithFormat:@"%@\nOPX- User is not reachable or not found: %@", logview.text, peerUsername]];
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- User is not reachable or not found: %@", peerUsername]];
+        
         
         UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"EngageChat"
                                                         message:@"User is not reachable or not found. Consider sending an iMessage or Email."
@@ -1243,7 +1238,7 @@
     }
     else  if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"REGISTER_RESPONSE"])
     {
-        [logview setText:[NSString stringWithFormat:@"%@\nOPX- Registered user %@", logview.text, username]];
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- Registered user %@", username]];
         
         [self updateRegisteredUI];
         
@@ -1261,7 +1256,7 @@
     
     NSLog(@":( Websocket Failed With Error %@", error);
     
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX socket failure :%@ ", logview.text,error]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket failure :%@ ", error]];
     
     actionButton.hidden = FALSE;
     inviteButton.hidden = TRUE;
@@ -1283,7 +1278,7 @@
     
     NSLog(@"WebSocket closed");
     
-    [logview setText:[NSString stringWithFormat:@"%@\nOPX socket closed : %@ ", logview.text, reason]];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket closed : %@ ", reason]];
     
     [self updateDeRegisteredUI];
 
@@ -1391,7 +1386,7 @@
         peerUsername = [[NSString alloc] initWithString:emailAddress];
         
         
-        [logview setText:[NSString stringWithFormat:@"%@\nOPX- Inviting %@", logview.text, peerUsername]];
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- Inviting %@", peerUsername]];
         
         
         if(displaynameField.text.length>0)
@@ -1433,7 +1428,7 @@
         
         peerUsername = [[NSString alloc] initWithString:aNSString];
     
-        [logview setText:[NSString stringWithFormat:@"%@\nOPX- Inviting %@", logview.text, peerUsername]];
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- Inviting %@", peerUsername]];
         
         
         if(displaynameField.text.length>0)
@@ -1449,5 +1444,9 @@
     return NO;
 }
 
+- (void) updateActivityLog:(NSString*) log
+{
+    [logview setText:[NSString stringWithFormat:@"\n%@\n%@\n", log, logview.text]];
+}
 
 @end
