@@ -45,5 +45,5 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
     [ovxView ovxView_sendOPXMessage:msgString];
     
 
-### For more information, please visit http://developer.openclove.com
+### For more information, please visit http://freemad.net
 
