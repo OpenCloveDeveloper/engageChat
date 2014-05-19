@@ -5,9 +5,9 @@ engageChat source code for In-App communications using FreeMAD Service.
 
 Get your own APIKey for FREE at http://developer.openclove.com and start using the FreeMAD Service for free.
 
-iOS Quick Start:
+## iOS Quick Start:
 
-Configure the Service:
+### Configure the Service:
     
     [ovxView setParameter:@"ovx-title":@"EngageChat"]
     
