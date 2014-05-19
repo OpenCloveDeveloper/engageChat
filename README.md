@@ -29,5 +29,23 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
 
     [self sendOPXApplicationInviteMessage:@"john.doe@openclove.com"]
 
+#### Send MESSAGE REQUEST
+
+    NSMutableDictionary *inviteData = [NSMutableDictionary dictionaryWithObjectsAndKeys:
+                                       @"MSG_REQUEST", @"msgtype",
+                                       @"myAppKey:user1@ovx.me", @"fromid",
+                                       @"myAppKey:user2@ovx.me", @"toid",
+                                       @"message", @"type",
+                                       @"12312",@"msgId",
+                                       @"Any Text or JSON Message",@"data",
+                                       nil];
+    
+    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:inviteData options:0 error:nil];
+    
+    NSString* msgString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
+    
+    [ovxView ovxView_sendOPXMessage:msgString];
+    
+
 ### For more information, please visit http://developer.openclove.com
 
