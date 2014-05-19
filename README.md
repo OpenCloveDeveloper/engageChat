@@ -41,9 +41,7 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
                                        nil];
     
     NSData* jsonData = [NSJSONSerialization dataWithJSONObject:inviteData options:0 error:nil];
-    
     NSString* msgString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    
     [ovxView ovxView_sendOPXMessage:msgString];
     
 
