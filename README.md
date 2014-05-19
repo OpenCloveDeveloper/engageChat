@@ -16,20 +16,18 @@ Configure the Service:
 
 Register the User:
     
-    [ovxView setUserLogin:@"14692334486 usingType @"phone"], OR
+    [ovxView setUserLogin:@"14695551212" usingType @"phone"], OR
     
-    [ovxView setUserLogin:@"pulin@openclove.com usingType @"email"], OR
+    [ovxView setUserLogin:@"janet@openclove.com usingType @"email"], OR
     
     [ovxView setUserLogin:facebook usingType @"facebook"], OR
     
-    [ovxView setUserLogin:yossession usingType @"yahoo"], OR
-
 
 Invoke iOS Address Book, and find someone's address.
 
 Invite Someone:
 
-    [self sendOPXApplicationInviteMessage:@"shubh@openclove.com"]
+    [self sendOPXApplicationInviteMessage:@"john.doe@openclove.com"]
 
 For more information, please visit http://developer.openclove.com
 
