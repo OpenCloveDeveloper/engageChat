@@ -7,14 +7,12 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
 
 iOS Quick Start:
 
-Configure the FreeMAD Service:
-
-[ovxView setKeyValue:@"ovx-title" :@"Engage Chat" ];
-
-[ovxView setKeyValue:@"ovx-apiKey" :@"jmbyzaurgsq2qfqgyrt6ct8m" ];
-
-[ovxView setKeyValue:@"ovx-maxParticipants" :@"2"];
-
+Configure the Service:
+    
+    [ovxView setParameter:@"ovx-title":@"EngageChat"]
+    
+    [ovxView setParameter:@"ovx-apiKey":@"GET_AN_API_KEY"]
+    
 
 Register the User:
     
