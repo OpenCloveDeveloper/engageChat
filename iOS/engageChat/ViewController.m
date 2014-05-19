@@ -1237,9 +1237,7 @@
         
     }
     else  if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"REGISTER_RESPONSE"])
-    {
-        [self updateActivityLog:[NSString stringWithFormat:@"OPX- Registered user %@", username]];
-        
+    {        
         [self updateRegisteredUI];
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
