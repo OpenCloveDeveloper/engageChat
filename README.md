@@ -20,7 +20,7 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
     
     [ovxView setUserLogin:@"janet@openclove.com usingType @"email"], OR
     
-    [ovxView setUserLogin:facebook usingType @"facebook"], OR
+    [ovxView setUserLogin:facebook usingType @"facebook"]
     
 
 #### Invoke iOS Address Book, and find someone's address.
