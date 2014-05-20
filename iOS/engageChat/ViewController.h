@@ -21,7 +21,7 @@
 
 
 
-@interface ViewController : UIViewController <UITextFieldDelegate,OVXDelegate,ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate,ABNewPersonViewControllerDelegate,ABUnknownPersonViewControllerDelegate >
+@interface ViewController : UIViewController <UITextFieldDelegate,OVXDelegate,ABPeoplePickerNavigationControllerDelegate,ABPersonViewControllerDelegate,ABNewPersonViewControllerDelegate,ABUnknownPersonViewControllerDelegate>
 {
     
     UITextView *logview;
@@ -29,11 +29,12 @@
     
     UITextField *displaynameField;
     UITextField *usernameField;
+    UITextField *userphoneField;
     UITextField *peernameField;
     
     UIButton *actionButton;
     UIButton *inviteButton;
-     UIButton *inviteFriendButton;
+    UIButton *inviteFriendButton;
     UIButton *endCallButton;
     
     NSString *displayname;
@@ -54,11 +55,14 @@
     
     BOOL startcall;
     BOOL endcall;
+
 }
 
 @property (retain, nonatomic) IBOutlet UITextView *logview;
 @property (retain, nonatomic) IBOutlet UITextField *displaynameField;
 @property (retain, nonatomic) IBOutlet UITextField *usernameField;
+@property (retain, nonatomic) IBOutlet UITextField *userphoneField;
+
 @property (retain, nonatomic) IBOutlet UITextField *peernameField;
 
 @property (retain, nonatomic) IBOutlet UIButton *actionButton;
@@ -75,8 +79,6 @@
 @property (retain, nonatomic) NSString *inviteRecvdTimer;
 @property (retain, nonatomic) UIAlertView *inviteRecvdAlert;
 
-
-- (void) reconnectOPX;
 - (void)cancelTimerAndAccept;
 
 @end

@@ -11,6 +11,7 @@
 
 
 #import <UIKit/UIKit.h>
+//#import "CODialog.h"
 
 @protocol OVXDelegate;
 @interface OVXView : UIView <UIWebViewDelegate>
@@ -47,6 +48,10 @@
 
   
     UIViewController* mainController;
+    
+      // CODialog*  dialog;
+    
+    
     
 }
 
@@ -92,7 +97,7 @@
 @property (retain, nonatomic) NSString *asiUrl;
 
 
-
+//@property (retain, nonatomic) CODialog *dialog;
 
 
 //FUNCTIONS
@@ -131,28 +136,28 @@
 /*  Following OVX parameters can be set using this function:
  
         Key                             Parameter                                    Example
-    1. ovx-title                    Title of app                        [ovxView setKeyValue:@"ovx-title" :@"OVX Example" ];
-    2. ovx-apiKey                   API Key of application              [ovxView setKeyValue:@"ovx-apiKey" :@"Api Key String" ];
-    3. ovx-apiSecret                API secret of application           [ovxView setKeyValue:@"ovx-apiSecret" :@"Api Key Secret" ];
+    1. ovx-title                    Title of app                        [ovxView setParameter:@"ovx-title" :@"OVX Example" ];
+    2. ovx-apiKey                   API Key of application              [ovxView setParameter:@"ovx-apiKey" :@"Api Key String" ];
+    3. ovx-apiSecret                API secret of application           [ovxView setParameter:@"ovx-apiSecret" :@"Api Key Secret" ];
                                                                         // if not provided, takes default value
-    4. ovx-userId                   User ID                             [ovxView setKeyValue:@"ovx-userId" :( NSString*)CFUUIDCreateString(NULL, theUuid) ];
-    5. ovx-name                     user name                           [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
-    6. ovx-session                  Group Id                            [ovxView setKeyValue:@"ovx-session" :@"abc123" ];
-    7. ovx-mood                     mood id  (@"1", @"2", @"3")         [ovxView setKeyValue:@"ovx-mood" :@"1"];
-    8. ovx-width                    width of video view                 [ovxView setKeyValue:@"ovx-width" :@"320" ];
-    9. ovx-height                   height of video view                [ovxView setKeyValue:@"ovx-height" :@"240" ];
-    10. ovx-type                     "video" / "voice"                   [ovxView setKeyValue:@"ovx-type" :@"video" ];
-    11. ovx-chat                    "enable" / "disable"                [ovxView setKeyValue:@"ovx-chat" :@"enable" ];
-    12. ovx-record                  "enable" / "disable"                [ovxView setKeyValue:@"ovx-record" :@"enable" ];
-    13. ovx-debug                   "enable"/ "disable"                [ovxView setKeyValue:@"ovx-debug" :@"enable" ];
-    14. ovx-enableUserInteraction   "enable"/ "disable"                [ovxView setKeyValue:@"ovx-enableUserInteraction" :@"enable" ];
-    15. ovx-autoHideOnCallEnd       "enable"/ "disable                 [ovxView setKeyValue:@"ovx-autoHideOnCallEnd" :@"enable" ];
-    16. ovx-showOvxMenuOnTap"       "enable"/ "disable"                [ovxView setKeyValue:@"ovx-showOVXMenuOnTap" :@"enable" ];
+    4. ovx-userId                   User ID                             [ovxView setParameter:@"ovx-userId" :( NSString*)CFUUIDCreateString(NULL, theUuid) ];
+    5. ovx-name                     user name                           [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
+    6. ovx-session                  Group Id                            [ovxView setParameter:@"ovx-session" :@"abc123" ];
+    7. ovx-mood                     mood id  (@"1", @"2", @"3")         [ovxView setParameter:@"ovx-mood" :@"1"];
+    8. ovx-width                    width of video view                 [ovxView setParameter:@"ovx-width" :@"320" ];
+    9. ovx-height                   height of video view                [ovxView setParameter:@"ovx-height" :@"240" ];
+    10. ovx-type                     "video" / "voice"                   [ovxView setParameter:@"ovx-type" :@"video" ];
+    11. ovx-chat                    "enable" / "disable"                [ovxView setParameter:@"ovx-chat" :@"enable" ];
+    12. ovx-record                  "enable" / "disable"                [ovxView setParameter:@"ovx-record" :@"enable" ];
+    13. ovx-debug                   "enable"/ "disable"                [ovxView setParameter:@"ovx-debug" :@"enable" ];
+    14. ovx-enableUserInteraction   "enable"/ "disable"                [ovxView setParameter:@"ovx-enableUserInteraction" :@"enable" ];
+    15. ovx-autoHideOnCallEnd       "enable"/ "disable                 [ovxView setParameter:@"ovx-autoHideOnCallEnd" :@"enable" ];
+    16. ovx-showOvxMenuOnTap"       "enable"/ "disable"                [ovxView Value:@"ovx-showOVXMenuOnTap" :@"enable" ];
  
  */
 
 
--(void) setKeyValue: (NSString *)parameter :(NSString*)value;
+-(void) setParameter: (NSString *)parameter :(NSString*)value;
 
 -(void) launch;
 -(void)ovxVideoRecord:(BOOL)record;
@@ -162,9 +167,18 @@
 //end of new api
 
 
-- (int) ovxView_OPXconnect;
-- (id) ovxView_OPXSocket;
+-(void) setUserLogin:(id)loginID withType:(NSString*)loginType;
+
+
+-(void) setUserLogin:loginID withType:(NSString*)loginType FirstName:(NSString*)fname LastName:(NSString*)lname ProfilePicture:(NSString*)picurl AppKey:(NSString*) appkey;
+
+
+//- (int) ovxView_OPXconnect;
+//- (id) ovxView_OPXSocket;
 - (int) ovxView_sendOPXMessage:(NSString*) msgString;
+
+-(void) opxInitiateRegister;
+-(void) sendOpxRegister;
 
 
 @end
@@ -181,11 +195,11 @@
 -(void)ovxReceivedEvent:(NSString*)event;
 
 
-- (void) ovxView_didReceiveOPXMessage:(NSDictionary *)rxMessage;
-- (void) ovxView_didFailOPXWithError:(NSError *)error;
-- (void) ovxView_didCloseOPXWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
-- (void) ovxView_didConnectOPX;
-- (void) ovxView_didOpenOPX;
+- (void) opxDidReceiveMessage:(NSDictionary *)rxMessage;
+- (void) opxConnectionReady;
+- (void) opxConnectionFailed:(NSError*)error;
+- (void) opxAuthenticationFailed:(NSError*)error;
+- (void) opxConnectionClosed:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean;
 
 
 @end
@@ -207,7 +221,7 @@
 
 /* Depracated Usage 
  
- Following usage is deprecated. Application to call setKeyValue() instead.
+ Following usage is deprecated. Application to call setParameter() instead.
     ovxView.title
     ovxView.API_KEY
     ovxView.userId

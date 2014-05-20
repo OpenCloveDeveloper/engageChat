@@ -15,7 +15,8 @@
                 <outlet property="logview" destination="212" id="Rnn-lh-css"/>
                 <outlet property="peernameField" destination="D2V-bM-MSc" id="bPD-CR-447"/>
                 <outlet property="usernameField" destination="T1J-ru-O4j" id="DJ4-Zg-lLG"/>
-                <outlet property="view" destination="6" id="7"/>
+                <outlet property="userphoneField" destination="Wwv-bK-qlE" id="nrc-ue-s9j"/>
+                <outlet property="view" destination="6" id="jY3-a3-Xti"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -31,7 +32,7 @@
                     </items>
                 </navigationBar>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="openclove-color.png" id="196">
-                    <rect key="frame" x="6" y="71" width="43" height="46"/>
+                    <rect key="frame" x="5" y="28" width="43" height="46"/>
                     <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 </imageView>
                 <button contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="xRd-vF-eYs">
@@ -44,7 +45,7 @@
                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                     </state>
                     <connections>
-                        <action selector="onActionButton:" destination="-1" eventType="touchUpInside" id="Hc2-a4-bpE"/>
+                        <action selector="onRegisterButton:" destination="-1" eventType="touchUpInside" id="KT6-Sg-CYi"/>
                     </connections>
                 </button>
                 <button hidden="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="0TP-bO-Z6Y">
@@ -87,14 +88,14 @@
                     </connections>
                 </button>
                 <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter Name (Optional)" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="63Q-3k-eSc">
-                    <rect key="frame" x="20" y="119" width="280" height="30"/>
+                    <rect key="frame" x="20" y="82" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
                 </textField>
-                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter Email or Phone # (Required)" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="T1J-ru-O4j">
-                    <rect key="frame" x="20" y="151" width="280" height="30"/>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Enter Email Address, OR" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="T1J-ru-O4j">
+                    <rect key="frame" x="20" y="115" width="280" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -106,6 +107,13 @@
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                     <textInputTraits key="textInputTraits"/>
+                </textField>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Phone Number (with Country Code)" clearsOnBeginEditing="YES" minimumFontSize="17" clearButtonMode="whileEditing" id="Wwv-bK-qlE">
+                    <rect key="frame" x="20" y="150" width="280" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits" keyboardType="phonePad"/>
                 </textField>
                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="Welcome to OpenClove -- Activity Log" id="212">
                     <rect key="frame" x="20" y="341" width="280" height="207"/>

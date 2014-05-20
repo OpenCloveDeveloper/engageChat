@@ -25,7 +25,7 @@
 @synthesize username;
 @synthesize peerUsername;
 @synthesize ovxSessId;
-@synthesize usernameField, peernameField, displaynameField;
+@synthesize usernameField, peernameField, displaynameField, userphoneField;
 @synthesize actionButton, endCallButton, inviteButton, inviteFriendButton;
         
 - (void)viewDidLoad
@@ -40,7 +40,10 @@
     
     ovxView = [OVXView sharedInstance];
     ovxView.delegate = self;
+    
     [self configureOVXPlayer];
+    
+    [self opxInitiateLogin];
 
     
     /* Add the ovxView to the current View, and keep it Hidden */
@@ -56,9 +59,7 @@
     
     startcall=FALSE;
     endcall=FALSE;
-
-    
-    
+        
 }
 
 
@@ -70,48 +71,59 @@
     NSLog(@"engageChat did enter foreground notification");
 }
 
--(void) opxInitiateRegister
+
+-(void) opxInitiateLogin
 {
     /* Get Username from stored Default */
+
     username = [[NSUserDefaults standardUserDefaults] objectForKey:@"USERNAME"];
     
     if((username == nil) || (username.length<3))
     {
-        if (usernameField.text)
+        if (userphoneField.text)
+            username = [[NSString alloc] initWithString:userphoneField.text];
+        else if (usernameField.text)
             username = [[NSString alloc] initWithString:usernameField.text];
         else
             username = @"";
         
     }
-    else
-        usernameField.text = username;
     
     /* Connect to the OpenClove Peer Exchange Service to Register */
-    
-    if([ovxView ovxView_OPXSocket])
-        [self sendOpxRegister];
+
+    if([username rangeOfString:@"@"].location == NSNotFound)
+    {
+        userphoneField.text = username;
+        [ovxView setUserLogin:username withType:@"sms"];
+    }
     else
-        [ovxView ovxView_OPXconnect];
+    {
+        usernameField.text = username;
+        [ovxView setUserLogin:username withType:@"email"];
+    }
+    
+    
 }
+
 
 -(void) configureOVXPlayer
 {
     //menu title
     
     
-    [ovxView setKeyValue:@"ovx-title" :@"Engage Chat" ];
+    [ovxView setParameter:@"ovx-title" :@"Engage Chat" ];
     
-    [ovxView setKeyValue:@"ovx-apiKey" :@"jmbyzaurgsq2qfqgyrt6ct8m" ];
-    [ovxView setKeyValue:@"ovx-maxParticipants" :@"2"];
+    [ovxView setParameter:@"ovx-apiKey" :@"jmbyzaurgsq2qfqgyrt6ct8m" ];
+    [ovxView setParameter:@"ovx-maxParticipants" :@"2"];
     
     /*Now we will assign a User ID and Name. In this example, we allocate a unique ID for this App and Device, and pick the IOS Device Name as the User Name.  The User ID and User Name can be entirely whatever your Application provides.  The User ID MUST be unique across all your applications using the same API_KEY  */
     
     CFUUIDRef theUuid = CFUUIDCreate(NULL);
     ovxView.userId = ( NSString*)CFUUIDCreateString(NULL, theUuid);
-    [ovxView setKeyValue:@"ovx-userId" :( NSString*)CFUUIDCreateString(NULL, theUuid)];
+    [ovxView setParameter:@"ovx-userId" :( NSString*)CFUUIDCreateString(NULL, theUuid)];
     
   
-    [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+    [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
     
     
     /* Group ID is associated with the common live video room.  All calls placed with the same Group ID originating from the same API_KEY will be part of the same Video room.  For example, you could have one group ID for your entire Application, so all users using the same Application when they join Live Board, they will be in the same video room.  Another example, could be where each Section of a Book can be a different Group ID, and hence creating a separate room for each Section of the Book.
@@ -129,10 +141,10 @@
     grpId= [grpId lowercaseString]; // Here we will use a single group ID for the entire demo App
     ovxSessId = [[NSString alloc] initWithString:grpId];
     
-    [ovxView setKeyValue:@"ovx-session" :grpId ];
+    [ovxView setParameter:@"ovx-session" :grpId ];
     
     // this refers to the Themeing of video frames, background, etc. of the Live Board video room.  Contact support@openclove.com for more details on the Themes available.
-    [ovxView setKeyValue:@"ovx-mood" :@"1"];
+    [ovxView setParameter:@"ovx-mood" :@"1"];
     
     
     /* Now lets set a default size and location of the Video Window on your device.  This is where the video will first start.  After that you can pinch to re-size, and drag to move it around the Screen. */
@@ -142,37 +154,34 @@
         
         // ovxView.transform = CGAffineTransformMakeScale(0.5, 0.5);
         [ovxView setFrame:CGRectMake(0, 140, 320, 240)];
-        [ovxView setKeyValue:@"ovx-width" :@"320" ];  //width of video view
-        [ovxView setKeyValue:@"ovx-height" :@"240" ];
+        [ovxView setParameter:@"ovx-width" :@"320" ];  //width of video view
+        [ovxView setParameter:@"ovx-height" :@"240" ];
         
         
     }else
     {
         [ovxView setFrame:CGRectMake(300, 140, 640, 480)];
-        [ovxView setKeyValue:@"ovx-width" :@"640" ];  //width of video view
-        [ovxView setKeyValue:@"ovx-height" :@"480" ];
+        [ovxView setParameter:@"ovx-width" :@"640" ];  //width of video view
+        [ovxView setParameter:@"ovx-height" :@"480" ];
     }
     
     
     
-    [ovxView setKeyValue:@"ovx-widget" :@"ovxplayer" ];
-    [ovxView setKeyValue:@"ovx-type" :@"video" ];
+    [ovxView setParameter:@"ovx-widget" :@"ovxplayer" ];
+    [ovxView setParameter:@"ovx-type" :@"video" ];
     
-    [ovxView setKeyValue:@"ovx-chat" :@"enable" ];
-    [ovxView setKeyValue:@"ovx-record" :@"enable" ];
-    [ovxView setKeyValue:@"ovx-dialout" :@"disable" ];
-    [ovxView setKeyValue:@"ovx-render" :@"panel" ];
-    [ovxView setKeyValue:@"ovx-autostart" :@"false" ];
+    [ovxView setParameter:@"ovx-chat" :@"enable" ];
+    [ovxView setParameter:@"ovx-record" :@"enable" ];
+    [ovxView setParameter:@"ovx-dialout" :@"disable" ];
+    [ovxView setParameter:@"ovx-render" :@"panel" ];
+    [ovxView setParameter:@"ovx-autostart" :@"false" ];
     
-    [ovxView setKeyValue:@"ovx-showOvxMenuOnTap" :@"enable" ];
-    [ovxView setKeyValue:@"ovx-autoHideOnCallEnd" :@"enable" ];
+    [ovxView setParameter:@"ovx-showOvxMenuOnTap" :@"enable" ];
+    [ovxView setParameter:@"ovx-autoHideOnCallEnd" :@"enable" ];
     
-    [ovxView setKeyValue:@"ovx-debug":@"enable"];
-  
+    [ovxView setParameter:@"ovx-debug":@"enable"];
     
     [ovxView launch];
-    
-    [self opxInitiateRegister];
     
 }
 
@@ -213,7 +222,7 @@
 {
     if(ovxView.isCallOn)
     {
-        [ovxView setKeyValue:@"ovx-record" :@"enable" ];
+        [ovxView setParameter:@"ovx-record" :@"enable" ];
         [ovxView ovxVideoRecord:true];// SDK method to record call
     }
 }
@@ -254,17 +263,7 @@
         audiomute = !audiomute;
         [ovxView ovxAudioMute:audiomute];  //SDK method to change the audio mute status
     }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                        message:@"Start or Join a Call First"
-                                                        delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles: nil];
-        [alert show];
-     }
 
-    
     /* direct access to mute/unmute Audio */
 }
 
@@ -279,16 +278,6 @@
     {
         videomute = !videomute;
         [ovxView ovxVideoMute:videomute]; /* SDK method to mute/unmute Video */
-    }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                        message:@"Start or Join a Call First"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
-        
     }
     
 }
@@ -305,16 +294,7 @@
     {
         [ovxView switchCamera];
     }
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Warning"
-                                                        message:@"Start or Join a Call First"
-                                                        delegate:nil
-                                                        cancelButtonTitle:@"OK"
-                                                        otherButtonTitles: nil];
-        [alert show];
 
-    }
 }
 
 
@@ -453,127 +433,225 @@
 
 }
 
-//End of Call back functions
-
-// Utility functions
-
-/*
- generateNonce utility function is used to genrate random string. This is used to generate random/unique Group Id
- */
--(NSString*) generateMsgId
+- (void)opxDidReceiveMessage:(NSDictionary *)rxMessage
 {
-    NSString *randomStr = [self generateNonce];
+    NSLog(@"RX MESSAGE TYPE : %@", [rxMessage objectForKey:@"msgtype"]);
     
-    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"=" withString:@""];
-    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
-    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"/" withString:@""];
-    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"+" withString:@""];
-    
-    randomStr= [randomStr lowercaseString]; // Here we will use a single group ID for the entire demo App
-    randomStr = [randomStr substringToIndex:4];
-    return  randomStr;
-    
+    [self processOPXMessage:rxMessage];
 }
 
-- (NSString*) generateNonce
+-(void) opxConnectionReady
 {
-    NSString* nonce;
-    CFUUIDRef theUUID = CFUUIDCreate(NULL);
-    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
-    [NSMakeCollectable(theUUID) autorelease];
-    nonce = (NSString *)string;
-	
-    return nonce;
+    NSLog(@":) ovxView_opxConnectionReady ");
+    [self updateRegisteredUI];
+    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:username forKey:@"USERNAME"];
+    [defaults synchronize];
     
 }
 
-/*
- parseQueryString utilty function is used to parse received data on data channel.
- */
-- (NSDictionary *)parseQueryString:(NSString *)query {
-    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6];// autorelease];
-    
-    NSArray *pairs = [query componentsSeparatedByString:@"&"];
-    
-    for (NSString *pair in pairs) {
-        NSArray *elements = [pair componentsSeparatedByString:@"="];
-        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        
-        [dict setObject:val forKey:key];
-    }
-    return dict;
-}
 
-/* utility function to encode url */
--(NSString *)urlencode:(NSString *)url
+-(void) opxConnectionFailed:(NSError *)error
 {
-    NSString *escapedUrl = ( NSString *)CFURLCreateStringByAddingPercentEscapes(     NULL,    (CFStringRef)url,     NULL,    (CFStringRef)@"!*'();:@&=+$,/?%#[]",     kCFStringEncodingUTF8);
     
-    return escapedUrl;
+    NSLog(@":( ovxView_opxConnectionFailed Failed With Error %@", error);
+    
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket failure :%@ ", error]];
+    [self updateDeRegisteredUI];
+    
 }
 
-/* utility function to decode url */
-
-- (NSString *)urldecode:(NSString *)url
+-(void) opxConnectionClosed:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
 {
-    NSString *result = [url stringByReplacingOccurrencesOfString:@"+" withString:@" "];
-    result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    return result;
-}
-
-// End of Utility functions
-/* portrait orientation for iPhone
-   portrait and two landscape modes are supported are supported for iPad.
- */
-- (NSUInteger)supportedInterfaceOrientations {
     
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-        return (UIInterfaceOrientationMaskPortrait );
-    }
-    else
-    {
-        return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight);
-    }
-}
-
-
-/*
- For Iphone - portrait and ipad portrait and two landscape modes in autorotation are supported. 
- */
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
-    {
-      
-        return (interfaceOrientation == UIInterfaceOrientationPortrait);
-    }
-    else
-        return ((interfaceOrientation == UIInterfaceOrientationPortrait) ||
-                (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) ||
-                (interfaceOrientation == UIInterfaceOrientationLandscapeRight) );
+    NSLog(@"WebSocket closed");
     
-
-}
-
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-	UITouch *touch = [touches anyObject];
-    UIView *touchedView = [touch view];
+    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket closed : %@ ", reason]];
+    [self updateDeRegisteredUI];
     
-    if( (touchedView.isUserInteractionEnabled) && (touchedView.tag==1111) )
-    {
-        
-        CGPoint location = [touch locationInView:self.view]; // <--- note self.superview
-        touchedView.center = location;
-        
-    }
-	
 }
 
+
+
+/**** End of ovxView Callback functions *******/
 
 
 /******BEGIN: APPLICATION USING OPX FUNCTIONS *********/
+
+- (void)processOPXMessage:(NSDictionary *)rxMessage
+{
+    NSLog(@"RX MESSAGE TYPE : %@", [rxMessage objectForKey:@"msgtype"]);
+    
+    if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"MSG_REQUEST"])
+    {
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:rxMessage options:0 error:nil];
+        
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        NSLog(@"jsonObject is %@",jsonObject);
+        
+        
+        NSString *data = jsonObject[@"data"];
+        
+        NSData *dataPart = [data dataUsingEncoding:NSUTF8StringEncoding];
+        
+        
+        NSMutableDictionary *jsonObject1=[NSJSONSerialization
+                                          JSONObjectWithData:dataPart
+                                          options:NSJSONReadingMutableLeaves
+                                          error:nil];
+        
+        inviteMessage = [[NSMutableDictionary alloc] initWithDictionary: jsonObject1];
+        NSString *msg_type = jsonObject1[@"msg_type"];
+        NSLog(@"msg type: %@", msg_type);
+        NSString *sessionId = jsonObject1[@"session_id"];
+        NSLog(@"session id: %@", sessionId);
+        NSString *msgId = jsonObject[@"msgId"];
+        
+        if([msg_type isEqualToString:@"INVITE_REQUEST"])
+        {
+            NSString *fromUser = jsonObject[@"fromid"];
+            NSArray *stringArray = [fromUser componentsSeparatedByString: @":"];
+            fromUser = stringArray[1];
+            peerUsername = [[NSString alloc] initWithString:fromUser];
+            [self processOPXInviteRequest];
+            
+            [self updateActivityLog:[NSString stringWithFormat:@"Received OPX Invite Request from %@", peerUsername]];
+            
+        }
+        else if([msg_type isEqualToString:@"INVITE_ACCEPTED"])
+        {
+            if([inviteSentTimer isValid])
+            {
+                NSString *inviteMsgId = (NSString*) [[inviteSentTimer userInfo] valueForKey:@"msgId"];
+                
+                if( [msgId isEqualToString:inviteMsgId])
+                {
+                    [inviteSentTimer invalidate];
+                    inviteSentTimer = nil;
+                }
+            }
+            
+        }
+        else   if([msg_type isEqualToString:@"INVITE_REJECTED"])
+        {
+            if([inviteSentTimer isValid])
+            {
+                
+                NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo] valueForKey:@"msgId"];
+                
+                if( [msgId isEqualToString:inviteMsgId])
+                {
+                    [inviteSentTimer invalidate];
+                    inviteSentTimer = nil;
+                }
+            }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invite rejected by peer"
+                                                            message:@"Invitation is rejected by peer. Please try after sometime"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles: nil];
+            
+            endcall=TRUE;
+            [alert show];
+            
+        }
+        else   if([msg_type isEqualToString:@"INVITE_EXPIRED"])
+        {
+            if([inviteSentTimer isValid])
+            {
+                
+                NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo] valueForKey:@"msgId"];
+                
+                if( [msgId isEqualToString:inviteMsgId])
+                {
+                    [inviteSentTimer invalidate];
+                    inviteSentTimer = nil;
+                }
+            }
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Engage Chat"
+                                                            message:@"No Response From Peer. Please try after sometime"
+                                                           delegate:nil
+                                                  cancelButtonTitle:@"OK"
+                                                  otherButtonTitles: nil];
+            
+            [self onCallEndButton:self];
+            
+            endcall=TRUE;
+            
+            [alert show];
+            
+        }
+    }
+    else  if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"MSG_RESPONSE"])
+    {
+        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:rxMessage options:0 error:nil];
+        
+        NSDictionary *jsonObject=[NSJSONSerialization
+                                  JSONObjectWithData:jsonData
+                                  options:NSJSONReadingMutableLeaves
+                                  error:nil];
+        
+        NSString *msgId = jsonObject[@"msgId"];
+        NSLog(@"Received ack with msgId  %@",msgId);
+        if(msgTimer!=nil)
+        {
+            if([msgTimer isValid])
+            {
+                NSString *sentMsgId = (NSString*)[[msgTimer userInfo] valueForKey:@"msgId"];
+                
+                if( [msgId isEqualToString:sentMsgId])
+                {
+                    [msgTimer invalidate];
+                    msgTimer = nil;
+                }
+            }
+        }
+        
+        if((inviteSentTimer &&[inviteSentTimer isValid]))
+        {
+            NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo ]valueForKey:@"msgId"];
+            
+            if( [msgId isEqualToString:inviteMsgId])
+            {
+                [inviteSentTimer invalidate];
+                inviteSentTimer = nil;
+            }
+        }
+        
+        NSString *data = jsonObject[@"errorcode"];
+        
+        if ((data == NULL)|| ([data isEqualToString:@"0"]))
+        {
+            
+            if(startcall==TRUE)
+            {
+                [ovxView setLatencyLevel:0.0];
+                startcall=FALSE;
+                [self onCallStart:self];
+            }
+            return;
+        }
+        
+        [self updateActivityLog:[NSString stringWithFormat:@"OPX- User is not reachable or not found: %@", peerUsername]];
+        
+        
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"EngageChat"
+                                                        message:@"User is not reachable or not found. Consider sending an iMessage or Email."
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        
+        [alert show];
+        
+        
+    }
+    
+}
+
 
 /* The group id  given by the user is set as the room id of ovx room */
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
@@ -601,25 +679,32 @@
 }
 /* onCallMenu method is invoked when "Call Menu" button is clicked. Call Menu options provided by SDK are displayed.  */
 
-- (IBAction) onActionButton: (id)sender
+- (IBAction) onRegisterButton: (id)sender
 {
 
-    if([usernameField isFirstResponder]){
-        [usernameField resignFirstResponder];
-    }
+    [self.view endEditing:YES];
     
         /* Sign in the user to the OPX Service */
         
         if(displaynameField.text.length>0)
-            [ovxView setKeyValue:@"ovx-name" : displaynameField.text];
+            [ovxView setParameter:@"ovx-name" : displaynameField.text];
         else
-            [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+            [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
 
+    if((userphoneField.text) && (userphoneField.text.length>3))
+    {
+        username =[[NSString alloc] initWithString:userphoneField.text];
+        usernameField.text = @"";
+        [ovxView setUserLogin:username withType:@"sms"];
+
+    }
+    else
+    {
         username = [[NSString alloc] initWithString:usernameField.text];
+        [ovxView setUserLogin:username withType:@"email"];
+
+    }
     
-        [self sendOpxRegister];
-
-
 }
 
 - (IBAction) onInviteButton: (id)sender
@@ -637,9 +722,9 @@
 
     
     if(displaynameField.text.length>0)
-        [ovxView setKeyValue:@"ovx-name" : displaynameField.text];
+        [ovxView setParameter:@"ovx-name" : displaynameField.text];
     else
-        [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+        [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
     
     [self sendOPXApplicationInviteMessage:peerUsername];
 
@@ -668,43 +753,6 @@
     NSLog(@"String: %@", msgString);
     [ovxView ovxView_sendOPXMessage:msgString];
     
-    
-}
-- (void) reconnectOPX
-{
-    if([ovxView ovxView_OPXSocket])
-        [self sendOpxRegister];
-    else
-        [ovxView ovxView_OPXconnect];
-}
-
-
-- (void) sendOpxRegister
-{
-    NSLog(@"Registering .... as %@", username);
-
-    NSString *idStr = [NSString stringWithFormat:@"myAPIKey:%@", username];
-    
-    NSDictionary *subscriberRegister = [NSDictionary dictionaryWithObjectsAndKeys:
-                                        @"REGISTER", @"msgtype",
-                                        idStr, @"id",
-                                        username, @"identity",
-                                        @"myNewAPIKey", @"key",
-                                        @"mainpage", @"contextid",
-                                        @"First", @"firstname",
-                                        @"Last", @"lastname",
-                                        @"me", @"members",
-                                        @"http://ovx.me/img/person-default.jpg", @"picture",
-                                        @"Activity Status", @"status",
-                                        @"idle", @"state",
-                                        ovxView.userId, @"deviceid",
-                                        @"mobile", @"devicetype",
-                                        nil];
-    
-    NSData* jsonData = [NSJSONSerialization dataWithJSONObject:subscriberRegister options:0 error:nil];
-    NSString* msgString = [[NSString alloc] initWithBytes:[jsonData bytes] length:[jsonData length] encoding:NSUTF8StringEncoding];
-    
-    int rc=[ovxView ovxView_sendOPXMessage:msgString];
     
 }
 
@@ -750,7 +798,7 @@
         {
             NSLog(@"SENDING LOCAL NOTIFICATION");
             
-            [self sendOpxRegister];
+            [ovxView sendOpxRegister];
             
             Class cls = NSClassFromString(@"UILocalNotification");
             UILocalNotification *notif = [[cls alloc] init];
@@ -828,12 +876,12 @@
 
     
     ovxSessId =inviteMessage[@"session_id"] ;
-    [ovxView setKeyValue:@"ovx-session" :ovxSessId ];
+    [ovxView setParameter:@"ovx-session" :ovxSessId ];
     
     if(displaynameField.text.length>0)
-        [ovxView setKeyValue:@"ovx-name" : displaynameField.text];
+        [ovxView setParameter:@"ovx-name" : displaynameField.text];
     else
-        [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+        [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
     
     
     [ovxView setLatencyLevel:0.0];
@@ -948,7 +996,7 @@
     else
         ovxSessId = ovxView.groupId;
     
-    [ovxView setKeyValue:@"ovx-session" :ovxSessId ];
+    [ovxView setParameter:@"ovx-session" :ovxSessId ];
 
     
     NSMutableDictionary *data = [NSMutableDictionary dictionaryWithObjectsAndKeys:
@@ -1062,242 +1110,6 @@
     
 }
 
-- (void)ovxView_didReceiveOPXMessage:(NSDictionary *)rxMessage
-{
-    NSLog(@"RX MESSAGE TYPE : %@", [rxMessage objectForKey:@"msgtype"]);
-    
-    if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"MSG_REQUEST"])
-    {
-         NSData* jsonData = [NSJSONSerialization dataWithJSONObject:rxMessage options:0 error:nil];
-        
-        NSDictionary *jsonObject=[NSJSONSerialization
-                                  JSONObjectWithData:jsonData
-                                  options:NSJSONReadingMutableLeaves
-                                  error:nil];
-        NSLog(@"jsonObject is %@",jsonObject);
-        
-        
-        NSString *data = jsonObject[@"data"];
-        
-        NSData *dataPart = [data dataUsingEncoding:NSUTF8StringEncoding];
-        
-        
-        NSMutableDictionary *jsonObject1=[NSJSONSerialization
-                                   JSONObjectWithData:dataPart
-                                   options:NSJSONReadingMutableLeaves
-                                   error:nil];
-        
-        inviteMessage = [[NSMutableDictionary alloc] initWithDictionary: jsonObject1];
-        NSString *msg_type = jsonObject1[@"msg_type"];
-        NSLog(@"msg type: %@", msg_type);
-        NSString *sessionId = jsonObject1[@"session_id"];
-        NSLog(@"session id: %@", sessionId);
-         NSString *msgId = jsonObject[@"msgId"];
-        
-        if([msg_type isEqualToString:@"INVITE_REQUEST"])
-        {
-            NSString *fromUser = jsonObject[@"fromid"];
-            NSArray *stringArray = [fromUser componentsSeparatedByString: @":"];
-            fromUser = stringArray[1];
-            peerUsername = [[NSString alloc] initWithString:fromUser];
-            [self processOPXInviteRequest];
-            
-            [self updateActivityLog:[NSString stringWithFormat:@"Received OPX Invite Request from %@", peerUsername]];
-
-        }
-        else if([msg_type isEqualToString:@"INVITE_ACCEPTED"])
-        {
-            if([inviteSentTimer isValid])
-            {
-                NSString *inviteMsgId = (NSString*) [[inviteSentTimer userInfo] valueForKey:@"msgId"];
-            
-                if( [msgId isEqualToString:inviteMsgId])
-                {
-                    [inviteSentTimer invalidate];
-                    inviteSentTimer = nil;
-                }
-            }
-            
-        }
-        else   if([msg_type isEqualToString:@"INVITE_REJECTED"])
-        {
-            if([inviteSentTimer isValid])
-            {
-                
-                NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo] valueForKey:@"msgId"];
-            
-                if( [msgId isEqualToString:inviteMsgId])
-                {
-                    [inviteSentTimer invalidate];
-                    inviteSentTimer = nil;
-                }
-            }
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Invite rejected by peer"
-                                                            message:@"Invitation is rejected by peer. Please try after sometime"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            
-            endcall=TRUE;
-            [alert show];
-            
-        }
-        else   if([msg_type isEqualToString:@"INVITE_EXPIRED"])
-        {
-            if([inviteSentTimer isValid])
-            {
-                
-                NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo] valueForKey:@"msgId"];
-                
-                if( [msgId isEqualToString:inviteMsgId])
-                {
-                    [inviteSentTimer invalidate];
-                    inviteSentTimer = nil;
-                }
-            }
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Engage Chat"
-                                                            message:@"No Response From Peer. Please try after sometime"
-                                                           delegate:nil
-                                                  cancelButtonTitle:@"OK"
-                                                  otherButtonTitles: nil];
-            
-            [self onCallEndButton:self];
-       
-             endcall=TRUE;
-
-            [alert show];
-            
-        }
-    }
-    else if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"PING"])
-    {
-        [self sendOpxRegister];
-    }
-    else  if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"MSG_RESPONSE"])
-    {
-        NSData* jsonData = [NSJSONSerialization dataWithJSONObject:rxMessage options:0 error:nil];
-        
-        NSDictionary *jsonObject=[NSJSONSerialization
-                                  JSONObjectWithData:jsonData
-                                  options:NSJSONReadingMutableLeaves
-                                  error:nil];
-        
-        NSString *msgId = jsonObject[@"msgId"];
-        NSLog(@"Received ack with msgId  %@",msgId);
-        if(msgTimer!=nil)
-        {
-            if([msgTimer isValid])
-            {
-                NSString *sentMsgId = (NSString*)[[msgTimer userInfo] valueForKey:@"msgId"];
-        
-                if( [msgId isEqualToString:sentMsgId])
-                {
-                    [msgTimer invalidate];
-                    msgTimer = nil;
-                }
-            }
-        }
-        
-        if((inviteSentTimer &&[inviteSentTimer isValid]))
-        {
-            NSString *inviteMsgId = (NSString*)[[inviteSentTimer userInfo ]valueForKey:@"msgId"];
-        
-            if( [msgId isEqualToString:inviteMsgId])
-            {
-                [inviteSentTimer invalidate];
-                inviteSentTimer = nil;
-            }
-        }
-        
-        NSString *data = jsonObject[@"errorcode"];
-
-        if ((data == NULL)|| ([data isEqualToString:@"0"]))
-        {
-            
-            if(startcall==TRUE)
-            {
-                [ovxView setLatencyLevel:0.0];
-                startcall=FALSE;
-                [self onCallStart:self];
-            }
-            return;
-        }
-        
-        [self updateActivityLog:[NSString stringWithFormat:@"OPX- User is not reachable or not found: %@", peerUsername]];
-        
-        
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"EngageChat"
-                                                        message:@"User is not reachable or not found. Consider sending an iMessage or Email."
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        
-        [alert show];
-        
-        
-    }
-    else  if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"REGISTER_RESPONSE"])
-    {        
-        [self updateRegisteredUI];
-        
-        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-        [defaults setObject:username forKey:@"USERNAME"];
-        [defaults synchronize];
-
-    }
-    
-}
-
-
--(void) ovxView_didFailOPXWithError:(NSError *)error
-{
-    
-    NSLog(@":( Websocket Failed With Error %@", error);
-    
-    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket failure :%@ ", error]];
-    
-    actionButton.hidden = FALSE;
-    inviteButton.hidden = TRUE;
-    inviteFriendButton.hidden = TRUE;
-    endCallButton.hidden = TRUE;
-    
-    [self updateDeRegisteredUI];
-    
-    [NSTimer scheduledTimerWithTimeInterval: 1.0
-                                            target: self
-                                            selector:@selector(reconnectOPX)
-                                            userInfo: nil repeats:NO];
-
-    
-}
-
--(void) ovxView_didCloseOPXWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean
-{
-    
-    NSLog(@"WebSocket closed");
-    
-    [self updateActivityLog:[NSString stringWithFormat:@"OPX socket closed : %@ ", reason]];
-    
-    [self updateDeRegisteredUI];
-
-}
-
--(void) ovxView_didOpenOPX
-{
-    NSLog(@"Applictaion: WebSocket Opened");
-    
-    [self sendOpxRegister];
-    
-}
-
--(void) ovxView_didConnectOPX
-{
-    
-    NSLog(@"WebSocket Connected");
-    
-    
-}
-
 -(void) updateRegisteredUI
 {
     inviteButton.hidden = FALSE;
@@ -1307,6 +1119,7 @@
 
 -(void) updateDeRegisteredUI
 {
+    
     actionButton.hidden = FALSE;
     inviteButton.hidden = TRUE;
     inviteFriendButton.hidden = TRUE;
@@ -1388,9 +1201,9 @@
         
         
         if(displaynameField.text.length>0)
-            [ovxView setKeyValue:@"ovx-name" : displaynameField.text];
+            [ovxView setParameter:@"ovx-name" : displaynameField.text];
         else
-            [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+            [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
         
         [self sendOPXApplicationInviteMessage:peerUsername];
         
@@ -1430,9 +1243,9 @@
         
         
         if(displaynameField.text.length>0)
-            [ovxView setKeyValue:@"ovx-name" : displaynameField.text];
+            [ovxView setParameter:@"ovx-name" : displaynameField.text];
         else
-            [ovxView setKeyValue:@"ovx-name" :[[UIDevice currentDevice] name]];
+            [ovxView setParameter:@"ovx-name" :[[UIDevice currentDevice] name]];
         
         [self sendOPXApplicationInviteMessage:peerUsername];
 
@@ -1442,9 +1255,127 @@
     return NO;
 }
 
+// Utility functions
+
+/*
+ generateNonce utility function is used to genrate random string. This is used to generate random/unique Group Id
+ */
+-(NSString*) generateMsgId
+{
+    NSString *randomStr = [self generateNonce];
+    
+    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"=" withString:@""];
+    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"-" withString:@""];
+    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    randomStr = [randomStr stringByReplacingOccurrencesOfString:@"+" withString:@""];
+    
+    randomStr= [randomStr lowercaseString]; // Here we will use a single group ID for the entire demo App
+    randomStr = [randomStr substringToIndex:4];
+    return  randomStr;
+    
+}
+
+- (NSString*) generateNonce
+{
+    NSString* nonce;
+    CFUUIDRef theUUID = CFUUIDCreate(NULL);
+    CFStringRef string = CFUUIDCreateString(NULL, theUUID);
+    [NSMakeCollectable(theUUID) autorelease];
+    nonce = (NSString *)string;
+	
+    return nonce;
+    
+}
+
+/*
+ parseQueryString utilty function is used to parse received data on data channel.
+ */
+- (NSDictionary *)parseQueryString:(NSString *)query {
+    NSMutableDictionary *dict = [[NSMutableDictionary alloc] initWithCapacity:6];// autorelease];
+    
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    
+    for (NSString *pair in pairs) {
+        NSArray *elements = [pair componentsSeparatedByString:@"="];
+        NSString *key = [[elements objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString *val = [[elements objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        
+        [dict setObject:val forKey:key];
+    }
+    return dict;
+}
+
+/* utility function to encode url */
+-(NSString *)urlencode:(NSString *)url
+{
+    NSString *escapedUrl = ( NSString *)CFURLCreateStringByAddingPercentEscapes(     NULL,    (CFStringRef)url,     NULL,    (CFStringRef)@"!*'();:@&=+$,/?%#[]",     kCFStringEncodingUTF8);
+    
+    return escapedUrl;
+}
+
+/* utility function to decode url */
+
+- (NSString *)urldecode:(NSString *)url
+{
+    NSString *result = [url stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+    result = [result stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    return result;
+}
+
+// End of Utility functions
+/* portrait orientation for iPhone
+ portrait and two landscape modes are supported are supported for iPad.
+ */
+- (NSUInteger)supportedInterfaceOrientations {
+    
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        return (UIInterfaceOrientationMaskPortrait );
+    }
+    else
+    {
+        return (UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskLandscapeLeft | UIInterfaceOrientationMaskLandscapeRight);
+    }
+}
+
+
+/*
+ For Iphone - portrait and ipad portrait and two landscape modes in autorotation are supported.
+ */
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPhone)
+    {
+        
+        return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    }
+    else
+        return ((interfaceOrientation == UIInterfaceOrientationPortrait) ||
+                (interfaceOrientation == UIInterfaceOrientationLandscapeLeft) ||
+                (interfaceOrientation == UIInterfaceOrientationLandscapeRight) );
+    
+    
+}
+
+
+- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
+	UITouch *touch = [touches anyObject];
+    UIView *touchedView = [touch view];
+    
+    if( (touchedView.isUserInteractionEnabled) && (touchedView.tag==1111) )
+    {
+        
+        CGPoint location = [touch locationInView:self.view]; // <--- note self.superview
+        touchedView.center = location;
+        
+    }
+	
+}
+
+
 - (void) updateActivityLog:(NSString*) log
 {
     [logview setText:[NSString stringWithFormat:@"\n%@\n%@\n", log, logview.text]];
 }
+
 
 @end
