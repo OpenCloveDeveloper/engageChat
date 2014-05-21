@@ -69,15 +69,22 @@
 
 - (void)appDidEnterForeground:(NSNotification *)notification {
     NSLog(@"engageChat did enter foreground notification");
+    [ovxView opxInitiateRegister];
 }
 
+-(void) reconnectOPX
+{
+    [ovxView sendOpxRegister];
+}
 
 -(void) opxInitiateLogin
 {
     /* Get Username from stored Default */
-
+    
     username = [[NSUserDefaults standardUserDefaults] objectForKey:@"USERNAME"];
     
+    NSLog(@"opxInitiateLogin for %@", username);
+
     if((username == nil) || (username.length<3))
     {
         if (userphoneField.text)
@@ -102,7 +109,9 @@
         [ovxView setUserLogin:username withType:@"email"];
     }
     
-    
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    [defaults setObject:username forKey:@"USERNAME"];
+    [defaults synchronize];
 }
 
 
@@ -445,10 +454,6 @@
     NSLog(@":) ovxView_opxConnectionReady ");
     [self updateRegisteredUI];
     
-    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    [defaults setObject:username forKey:@"USERNAME"];
-    [defaults synchronize];
-    
 }
 
 
@@ -481,7 +486,7 @@
 
 - (void)processOPXMessage:(NSDictionary *)rxMessage
 {
-    NSLog(@"RX MESSAGE TYPE : %@", [rxMessage objectForKey:@"msgtype"]);
+    NSLog(@"processOPXMessage RX MESSAGE TYPE : %@", [rxMessage objectForKey:@"msgtype"]);
     
     if([[rxMessage objectForKey:@"msgtype"] isEqualToString:@"MSG_REQUEST"])
     {

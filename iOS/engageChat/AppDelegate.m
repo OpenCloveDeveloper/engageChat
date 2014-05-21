@@ -49,7 +49,8 @@
 - (void)backgroundHandler {
     
     NSLog(@"### -->VOIP backgrounding callback"); // What to do here to extend timeout?
-        
+    
+    [self.viewController reconnectOPX];
 }
 
 

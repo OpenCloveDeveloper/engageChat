@@ -80,5 +80,7 @@
 @property (retain, nonatomic) UIAlertView *inviteRecvdAlert;
 
 - (void)cancelTimerAndAccept;
+- (void)reconnectOPX;
+
 
 @end

@@ -11,7 +11,6 @@
 
 
 #import <UIKit/UIKit.h>
-//#import "CODialog.h"
 
 @protocol OVXDelegate;
 @interface OVXView : UIView <UIWebViewDelegate>
