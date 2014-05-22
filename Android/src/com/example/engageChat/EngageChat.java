@@ -118,8 +118,7 @@ public class EngageChat extends Activity
 		OPXApplication.setUIState(true);
 		OPXApplication.unsetOVXListener();
 
-		Log.d("INDUS", " Connection & Registered:" + ovxView.isOPXConnected()
-				+ ovxView.isOPXRegistered());
+		Log.d("INDUS", " Registered:" + ovxView.isOPXRegistered());
 		try {
 
 			/* api key received on creation of developers account */
@@ -378,8 +377,13 @@ public class EngageChat extends Activity
 
 				if (!inv_text.getText().toString().trim().equals("")) {
 					if (!ovxView.isCallOn())
+					{
 						OPX.invite_request(ovxView, inv_text.getText()
 								.toString());
+						chat_box.append("\n" +"Sending OPX Invite Request to :"+inv_text.getText().toString());
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
+					}
 					else {
 						CharSequence[] ch = { "Call is already Active" };
 						showDialog("Engage Chat", ch);
@@ -458,6 +462,7 @@ public class EngageChat extends Activity
 			ovxView.setParameter("ovx-session", sessionId);
 			OPX.invite_accept(ovxView, peer, sessionId);
 			ovxView.call();
+			
 
 		}
 	}
@@ -609,22 +614,11 @@ public class EngageChat extends Activity
 	{
 		super.onDestroy();
 
-		// exit the call before destroying the activity
-		// ovxView.exitCall();
-
-		// ovxView.unregister();
-
-		// android.os.Process.killProcess(android.os.Process.myPid());
+	
 	}
 
 	// generic dialog used to display messages
 
-	static boolean isTablet(Context context)
-	{
-		boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
-		boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
-		return (xlarge || large);
-	}
 
 	public void showDialog(String title, String session_id, String peer)
 	{
@@ -663,9 +657,9 @@ public class EngageChat extends Activity
 
 							OPX.invite_accept(ovxView, peername, sessvalue);
 							ovxView.call();
-							chat_box.append("\n"
-									+ "OPX:Invite Request accepted by "
-									+ peername + "\n");
+							chat_box.append("\n" +"Invite Request from "+peername+"Accepted");
+							chat_box.setMovementMethod(new ScrollingMovementMethod());
+							focusOnText();
 
 						}
 
@@ -692,8 +686,9 @@ public class EngageChat extends Activity
 
 						OPX.invite_rejected(ovxView, peername, sessvalue);
 
-						chat_box.append("\n" + "OPX:Sending Reject Request"
-								+ "\n");
+						chat_box.append("\n" +"Invite Request from "+peername+"Rejected");
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
 					}
 				});
 
@@ -927,6 +922,8 @@ public class EngageChat extends Activity
 
 						pick_number.setVisibility(View.INVISIBLE);
 						chat_box.append("\n" + "Authentication Failed");
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
 
 					}
 				});
@@ -947,7 +944,9 @@ public class EngageChat extends Activity
 						inv_btn.setVisibility(View.INVISIBLE);
 
 						pick_number.setVisibility(View.INVISIBLE);
-						chat_box.append("\n" + "Connection Closed" + "\n");
+						chat_box.append("\n" + "Connection Closed" );
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
 
 					}
 				});
@@ -968,7 +967,9 @@ public class EngageChat extends Activity
 						inv_btn.setVisibility(View.INVISIBLE);
 
 						pick_number.setVisibility(View.INVISIBLE);
-						chat_box.append("\n" + "Connection failed" + "\n");
+					
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
 
 					}
 				});
@@ -994,9 +995,15 @@ public class EngageChat extends Activity
 						inv_btn.setVisibility(View.VISIBLE);
 						pick_number.setVisibility(View.VISIBLE);
 
-						chat_box.append("OPX-"
+						chat_box.append("\n"+"OPX-"
 								+ OPXApplication.getOPXUsername()
-								+ " Registered  " + "\n");
+								+ " Registered  " );
+						Intent mAlarmIntent = new Intent(currentActivity,
+								OPXAlarmManager.class);
+
+						sendBroadcast(mAlarmIntent);
+						chat_box.setMovementMethod(new ScrollingMovementMethod());
+						focusOnText();
 
 					}
 				});
@@ -1055,9 +1062,26 @@ public class EngageChat extends Activity
 					final String sessvalue = sessionId;
 					final String peername = peerName;
 
-					if (invite_msgtype.equals("INVITE_ACCEPTED")) {
+					if (invite_msgtype.equals("INVITE_ACCEPTED")) 
+					{
 						Log.d("INDUS", "Peer Invite Message Received:"
 								+ invite_msgtype);
+						currentActivity.runOnUiThread(new Runnable()
+						{
+							
+							@Override
+							public void run()
+							{
+								// TODO Auto-generated method stub
+					
+								chat_box.append("\n" + "OPX:"
+										+ "Invite Request accepted from"
+										+ peername );
+								chat_box.setMovementMethod(new ScrollingMovementMethod());
+								focusOnText();
+							}
+						});
+					
 					}
 
 					else if (invite_msgtype.equals("INVITE_EXPIRED")) {
@@ -1075,9 +1099,13 @@ public class EngageChat extends Activity
 
 								if (ovxView.isCallOn())
 									ovxView.exitCall();
-
-								chat_box.append("\n" + "OPX:" + peername
-										+ "request expired");
+								
+								chat_box.append("\n" + "OPX:"
+										+ "Invite Request Expired by"
+										+ peername );
+								chat_box.setMovementMethod(new ScrollingMovementMethod());
+								focusOnText();
+								
 								CharSequence[] ch = { "No Response from Invite User" };
 								showDialog("Engage Chat", ch);
 							}
@@ -1103,9 +1131,12 @@ public class EngageChat extends Activity
 
 								CharSequence[] ch = { "Call has been Rejected" };
 								showDialog("Engage Chat", ch);
+								
 								chat_box.append("\n" + "OPX:"
 										+ "Invite Request rejected by"
-										+ peername + "\n");
+										+ peername );
+								chat_box.setMovementMethod(new ScrollingMovementMethod());
+								focusOnText();
 							}
 						});
 
@@ -1124,13 +1155,20 @@ public class EngageChat extends Activity
 							{
 								// TODO Auto-generated method stub
 
+								
+								chat_box.append("\n" +"Received OPX Invite Request from "+peername);
+								chat_box.setMovementMethod(new ScrollingMovementMethod());
+								focusOnText();
+								
 								if (!ovxView.isCallOn()) {
 									/*
 									 * Playing the audio file once the invite
 									 * request came
 									 */
 
+									
 									play_audio();
+									
 									showDialog("Engage Chat", sessvalue,
 											peername);
 
@@ -1213,7 +1251,10 @@ public class EngageChat extends Activity
 							@Override
 							public void run()
 							{
-								chat_box.append("\n" + "OPX:" + reason_message);
+								chat_box.append("\n" + "OPX:"
+										+ reason_message );
+								chat_box.setMovementMethod(new ScrollingMovementMethod());
+								focusOnText();
 								CharSequence[] ch = { reason_message };
 								showDialog("Engage Chat", ch);
 							}
@@ -1233,6 +1274,7 @@ public class EngageChat extends Activity
 								ovxView.setLatency(0);
 								ovxView.setParameter("ovx-session", session_id);
 								ovxView.call();
+							
 								Log.d("INDUS",
 										"Call Status:" + ovxView.isCallOn());
 							} catch (OVXException e) {

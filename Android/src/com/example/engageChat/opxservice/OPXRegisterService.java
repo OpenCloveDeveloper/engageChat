@@ -45,7 +45,8 @@ public class OPXRegisterService extends Service
 		if (ovxview != null) {
 
 			if (!ovxview.isOPXRegistered() && !OPXApplication.isUiOn()
-					&& SessionManager.isAccNameAvail()) {
+					&& SessionManager.isAccNameAvail()) 
+			{
 				Log.d("INDUS",
 						"in service ---- opx not connected ... registering opx");
 
@@ -54,6 +55,7 @@ public class OPXRegisterService extends Service
 					
 					try {
 						ovxview.opxInitiateRegister(OPXApplication.getOPXUsername());
+					//	ovxview.setUserLogin(, "email");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

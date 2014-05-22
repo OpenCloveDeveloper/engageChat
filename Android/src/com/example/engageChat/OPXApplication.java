@@ -67,6 +67,7 @@ public class OPXApplication extends OVX{
 	{
 		if (ovxView != null) {
 			ovx_listener = null;
+			
 			ovxView.setCallListener(ovx_listener);
 		}
 	}
