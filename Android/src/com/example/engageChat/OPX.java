@@ -11,46 +11,6 @@ public class OPX {
 	/******  APPLICATION USING OPX FUNCTIONS *********/
 	
 	
-	public static void register_opx(OVXView ovx_instance)
-	{
-		 
-		
-		JSONObject jb = new JSONObject();
-		
-		try {
-			
-			jb.put("id", "myAPIKey" + ":" + OPXApplication.getOPXUsername());
-			jb.put("identity", OPXApplication.getOPXUsername());
-			jb.put("apikey", ovx_instance.getApiKey());
-			jb.put("msgtype", "REGISTER");
-			jb.put("contexid", "mainpage");
-			jb.put("firstname", OPXApplication.getOPXUsername());
-			jb.put("lastname", OPXApplication.getOPXUsername());
-			jb.put("members", "me");
-			jb.put("picture", "http://ovx.me/img/person-default.jpg");
-			jb.put("status", "Activity Status");
-			jb.put("state", "idle");
-			jb.put("deviceid", ovx_instance.getOvxUserId());
-			jb.put("devicetype", "mobile");
-			jb.put("key", ovx_instance.getApiKey());
-			
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		  try 
-		  {
-			ovx_instance.sendOPXMessage(jb.toString());
-		  }
-		  catch (OVXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 
-		
-	}
-	
 	
 	public static void invite_request(OVXView ovx_instance,String peer_name)
 	{
@@ -59,8 +19,8 @@ public class OPX {
 		JSONObject message_request = new JSONObject();
 		try {
 			message_request.put("msgtype", "MSG_REQUEST");
-			message_request.put("fromid", "myAPIKey"+":"+OPXApplication.getOPXUsername());
-			message_request.put("toid", "myAPIKey"+":"+peer_name);
+			message_request.put("fromid", "myAPIKey:"+OPXApplication.getOPXUsername());
+			message_request.put("toid", "myAPIKey:"+peer_name);
 			message_request.put("ovxApiKey",ovx_instance.getApiKey());
 			JSONObject invite_request = new JSONObject();
 			invite_request.put("msg_type", "INVITE_REQUEST");
@@ -96,8 +56,8 @@ public class OPX {
 		JSONObject message_request = new JSONObject();
 		try {
 			message_request.put("msgtype", "MSG_REQUEST");
-			message_request.put("fromid", "myAPIKey"+":"+OPXApplication.getOPXUsername());
-			message_request.put("toid", "myAPIKey"+":"+peer_name);
+			message_request.put("fromid","myAPIKey:"+OPXApplication.getOPXUsername());
+			message_request.put("toid", "myAPIKey:"+peer_name);
 			message_request.put("ovxApiKey",ovx_instance.getApiKey());
 			JSONObject invite_request = new JSONObject();
 			invite_request.put("msg_type", "INVITE_REJECTED");
@@ -135,8 +95,8 @@ public class OPX {
 		JSONObject message_request = new JSONObject();
 		try {
 			message_request.put("msgtype", "MSG_REQUEST");
-			message_request.put("fromid", "myAPIKey"+":"+OPXApplication.getOPXUsername());
-			message_request.put("toid", "myAPIKey"+":"+peer_name);
+			message_request.put("fromid", "myAPIKey:"+OPXApplication.getOPXUsername());
+			message_request.put("toid", "myAPIKey:"+peer_name);
 			message_request.put("ovxApiKey",ovx_instance.getApiKey());
 			
 			JSONObject invite_request = new JSONObject();
@@ -150,7 +110,8 @@ public class OPX {
 			message_request.put("reason", "NA");
 			message_request.put("ssr","10.209.153.23:8897");
 			
-		} catch (JSONException e) {
+		} catch (JSONException e) 
+		{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -174,11 +135,12 @@ public class OPX {
 		JSONObject message_request = new JSONObject();
 		
 		try {
+			
 			message_request.put("msgtype", "MSG_REQUEST");
-			message_request.put("fromid", "myAPIKey"+":"+OPXApplication.getOPXUsername());
-			message_request.put("toid", "myAPIKey"+":"+peer_name);
+			message_request.put("fromid", "myAPIKey:"+OPXApplication.getOPXUsername());//appKey:userIdemail or phone entered
+			message_request.put("toid", "myAPIKey:"+peer_name);
 			message_request.put("ovxApiKey",ovx_instance.getApiKey());
-			JSONObject invite_accept = new JSONObject();
+				JSONObject invite_accept = new JSONObject();
 			invite_accept.put("msg_type", "INVITE_ACCEPTED");
 			invite_accept.put("client_id", "");
 			invite_accept.put("session_id", sessionId);

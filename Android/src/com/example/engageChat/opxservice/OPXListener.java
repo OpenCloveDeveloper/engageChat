@@ -73,67 +73,7 @@ public class OPXListener implements OVXCallListener
 
 	}
 
-	@Override
-	public void handlePeerMessage(final String arg0)
-	{
-		// TODO Auto-generated method stub
-		Log.d("INDUS", "OVXLIstener    ----handlePeerMessage:" + arg0);
-
-		Handler mainHandler = new Handler(main_ctx.getMainLooper());
-
-		Runnable myRunnable = new Runnable()
-		{
-
-			private JSONObject request;
-			private String msg_type;
-			private String fromid;
-			private String apiKey;
-			private String peerName;
-			private String invite_msgtype;
-			private String sessionId;
-
-			@Override
-			public void run()
-			{
-				// TODO Auto-generated method stub
-				try {
-					
-					request = new JSONObject(arg0);
-					msg_type = (String) request.get("msgtype");
-					fromid = (String) request.get("fromid");
-					String data = (String) request.getString("data");
-
-					JSONObject jdata = new JSONObject(data);
-						invite_msgtype = (String) jdata.get("msg_type");
-						sessionId = (String) jdata.get("session_id");
-
-					}
-				catch (JSONException e) 
-				{
-					e.printStackTrace();
-				}
-
-				apiKey = fromid.split(":")[0];
-				peerName = fromid.split(":")[1];
-
-				Timer tt = new Timer();
-				TimerTask td = sendExpireOnExpiry(ovx_view, peerName, sessionId);
-
-				if (invite_msgtype.equals("INVITE_REQUEST")) 
-				{
-					
-					launchNtfctn(peerName, sessionId);
-					tt.schedule(td, 40000);
-
-				}
-				
-			
-				Log.d("INDUS", "creating notification");
-			}
-		}; // This is your code
-		mainHandler.post(myRunnable);
-
-	}
+	
 
 	public TimerTask sendExpireOnExpiry(final OVXView ovx_instance,
 			final String peer_name, final String session_id)
@@ -157,13 +97,6 @@ public class OPXListener implements OVXCallListener
 
 	}
 
-	
-	@Override
-	public void handleServerMessage(String arg0)
-	{
-		// TODO Auto-generated method stub
-		Log.d("INDUS", "OVXLIstener    ----handleServerMessage:" + arg0);
-	}
 
 	@Override
 	public void onNotificationEvent(String arg0, String arg1)
@@ -192,6 +125,17 @@ public class OPXListener implements OVXCallListener
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void opxAuthenticationFailed(String arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	
+
+	
 	@SuppressWarnings("deprecation")
 	private void launchNtfctn(final String peer, final String session_id)
 	{
@@ -204,7 +148,7 @@ public class OPXListener implements OVXCallListener
 		intent.putExtra("sessionId", session_id);
 		intent.putExtra("peer", peer);
 
-		PendingIntent pi = PendingIntent.getActivity(main_ctx, 1, intent, 0);
+		PendingIntent pi = PendingIntent.getActivity(main_ctx, 1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Vibrator vb = (Vibrator) main_ctx
 				.getSystemService(main_ctx.VIBRATOR_SERVICE);
@@ -215,7 +159,7 @@ public class OPXListener implements OVXCallListener
 
 		noti = new Notification(R.drawable.phoneicon, "Engage Chat",
 				System.currentTimeMillis());
-		noti.setLatestEventInfo(main_ctx, "EngageChat", peer + "is Calling..",
+		noti.setLatestEventInfo(main_ctx, "EngageChat", peer + "  is Calling..",
 				pi);
 
 		// noti.flags |= Notification.FLAG_AUTO_CANCEL;
@@ -236,4 +180,98 @@ public class OPXListener implements OVXCallListener
 		notmgr.cancel(0);
 		cancelled=true;
 	}
-}
+
+	@Override
+	public void opxConnectionClosed(int arg0, String arg1)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void opxConnectionFailed(String arg0)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void opxConnectionReady()
+	{
+		// TODO Auto-generated method stub
+	
+		Log.d("INDUS", "OVXLIstener    ----opxConnectionReady" );
+	}
+
+	@Override
+	public void opxDidReceiveMessage(String arg0)
+	{
+		// TODO Auto-generated method stub
+		
+		Log.d("INDUS", "OVXLIstener    ----opxDidReceiveMessage:" + arg0);
+
+		final String response=arg0;
+		Handler mainHandler = new Handler(main_ctx.getMainLooper());
+
+		Runnable myRunnable = new Runnable()
+		{
+
+			private JSONObject request;
+			private String msg_type;
+			private String fromid;
+			private String apiKey;
+			private String peerName;
+			private String invite_msgtype;
+			private String sessionId;
+
+			@Override
+			public void run()
+			{
+				// TODO Auto-generated method stub
+				try {
+					
+					request = new JSONObject(response);
+					msg_type = (String) request.get("msgtype");
+					fromid = (String) request.get("fromid");
+					
+
+					if(fromid.equals("SERVER"))
+						return;
+					
+					String data = (String) request.getString("data");
+
+					JSONObject jdata = new JSONObject(data);
+						invite_msgtype = (String) jdata.get("msg_type");
+						sessionId = (String) jdata.get("session_id");
+
+					}
+				catch (JSONException e) 
+				{
+					e.printStackTrace();
+				}
+
+				
+				apiKey = fromid.split(":")[0];
+				peerName = fromid.split(":")[1];
+
+				Timer tt = new Timer();
+				TimerTask td = sendExpireOnExpiry(ovx_view, peerName, sessionId);
+
+				if (invite_msgtype.equals("INVITE_REQUEST")) 
+				{
+					if(!ovx_view.isCallOn())
+						launchNtfctn(peerName, sessionId);
+					tt.schedule(td, 40000);
+
+				}
+				
+			
+				Log.d("INDUS", "creating notification");
+			}
+		}; // This is your code
+		mainHandler.post(myRunnable);
+
+		
+	}
+
+	}

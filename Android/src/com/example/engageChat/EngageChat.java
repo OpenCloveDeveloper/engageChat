@@ -10,11 +10,13 @@ package com.example.engageChat;
 
 import java.io.IOException;
 import java.util.Timer;
-import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.AlertDialog.Builder;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,8 +32,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.provider.ContactsContract;
 import android.provider.Settings.Secure;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -63,11 +67,11 @@ public class EngageChat extends Activity
 	protected RelativeLayout media_control;
 	private EditText ovx_text;
 	protected TextView chat_box;
-	private  EngageChat currentActivity;
+	private EngageChat currentActivity;
 	private String videourl;
 	private EditText inv_text;
 	private Button inv_btn;
-	private boolean accepted_rejectedclicked = false;
+	public boolean accepted_rejectedclicked;
 	private MediaPlayer player;
 	private Button register;
 	private Button pick_number;
@@ -76,65 +80,67 @@ public class EngageChat extends Activity
 	private EditText disp_name;
 	protected SessionManager sessionManager;
 	public Button end_btn;
+	private Notification noti;
+	private NotificationManager notmgr;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		
-		
-			setContentView(R.layout.ovx_chat);
-		
+
+		setContentView(R.layout.ovx_chat);
+
 		/** Comments provided for ovx sdk code **/
 
 		Log.d("OVX", "onCreate");
 
 		currentActivity = this;
 		sessionManager = new SessionManager(this);
-		
-		Log.d("INDUS","Session Registered name Availability:"+SessionManager.isAccNameAvail());
-		
-		if (SessionManager.isAccNameAvail())
-		{
+
+		Log.d("INDUS",
+				"Session Registered name Availability:"
+						+ SessionManager.isAccNameAvail());
+
+		if (SessionManager.isAccNameAvail()) {
 			OPXApplication.setOPXUsername(sessionManager.getUserDetails().get(
 					"name"));
 			Intent mAlarmIntent = new Intent(currentActivity,
 					OPXAlarmManager.class);
-		
+
 			sendBroadcast(mAlarmIntent);
 		}
-		
 
 		/* Access the Shared Instance of the OVXView */
 
 		ovxView = OVXView.getOVXContext(this);
 
-		
 		OPXApplication.setOVXContext(ovxView);
 		OPXApplication.setUIState(true);
 		OPXApplication.unsetOVXListener();
 
-		Log.d("INDUS"," Connection & Registered:"+ovxView.isOPXConnected()+ovxView.isOPXRegistered());
+		Log.d("INDUS", " Connection & Registered:" + ovxView.isOPXConnected()
+				+ ovxView.isOPXRegistered());
 		try {
 
 			/* api key received on creation of developers account */
 
-			ovxView.setKeyValue("ovx-apiKey", "jmbyzaurgsq2qfqgyrt6ct8m");
+			ovxView.setParameter("ovx-apiKey", "jmbyzaurgsq2qfqgyrt6ct8m");
 
 			/* secret key received on creation of developers account */
 
-			ovxView.setKeyValue("ovx-apiSecret", "p2MDJVWSwD7lFZvd2GXUySlXQwA=");
+			ovxView.setParameter("ovx-apiSecret",
+					"p2MDJVWSwD7lFZvd2GXUySlXQwA=");
 
 			/* Menu title */
 
-			ovxView.setKeyValue("ovx-title", "Engage Chat");
+			ovxView.setParameter("ovx-title", "Engage Chat");
 
 			/* To get UID(User ID) for the device */
 
 			String ovxuserId = Secure.getString(this.getContentResolver(),
 					Secure.ANDROID_ID);
 
-			ovxView.setKeyValue("ovx-userId", ovxuserId);
+			ovxView.setParameter("ovx-userId", ovxuserId);
 
 			/*
 			 * this refers to the Themeing of video frames, background, etc. of
@@ -142,7 +148,7 @@ public class EngageChat extends Activity
 			 * details on the Themes available.
 			 */
 
-			ovxView.setKeyValue("ovx-mood", "1");
+			ovxView.setParameter("ovx-mood", "1");
 
 			/*
 			 * Now lets set a default size and location of the Video Window on
@@ -150,10 +156,10 @@ public class EngageChat extends Activity
 			 * you can pinch to re-size, and drag to move it around the Screen.
 			 */
 
-			ovxView.setKeyValue("ovx-width", "320"); // Width of the video
+			ovxView.setParameter("ovx-width", "320"); // Width of the video
 														// view..
 
-			ovxView.setKeyValue("ovx-height", "240"); // Height of the video
+			ovxView.setParameter("ovx-height", "240"); // Height of the video
 														// view..
 
 			ovxView.setRemoteViewX(100); // X-axis location of the video view in
@@ -165,7 +171,7 @@ public class EngageChat extends Activity
 
 			/* To know the debug logs */
 
-			ovxView.setKeyValue("ovx-debug", "enable");
+			ovxView.setParameter("ovx-debug", "enable");
 
 			/*
 			 * Here you can set whether to show the OVX menu when the user taps
@@ -174,7 +180,7 @@ public class EngageChat extends Activity
 			 * maximize the video view.
 			 */
 
-			ovxView.setKeyValue("ovx-showOVXMenuOnTap", "enable");
+			ovxView.setParameter("ovx-showOVXMenuOnTap", "enable");
 
 			/*
 			 * Remote gesture api is true by default, setting it to false will
@@ -184,7 +190,7 @@ public class EngageChat extends Activity
 			 * on the screen.
 			 */
 
-			ovxView.setKeyValue("ovx-enableUserInteraction", "enable");// enable
+			ovxView.setParameter("ovx-enableUserInteraction", "enable");// enable
 																		// by
 																		// default
 
@@ -193,18 +199,18 @@ public class EngageChat extends Activity
 			 * remote peer who has joined the same room
 			 */
 
-			ovxView.setKeyValue("ovx-chat", "enable");
+			ovxView.setParameter("ovx-chat", "enable");
 
 			/* set record attribute to enable to record the video conference */
 
-			ovxView.setKeyValue("ovx-record", "enable");// disable by default
+			ovxView.setParameter("ovx-record", "enable");// disable by default
 
 			/*
 			 * Connect to the OpenClove Peer Exchange Service to establish the
 			 * connection..
 			 */
 
-			ovxView.connect_opx();
+			// ovxView.connect_opx();
 
 		} catch (OVXException e) {
 			// TODO Auto-generated catch block
@@ -226,13 +232,22 @@ public class EngageChat extends Activity
 
 		inv_text = (EditText) findViewById(R.id.app);
 		inv_text.setTextColor(Color.BLACK);
-		
+
+		inv_text.setVisibility(View.INVISIBLE);
+
 		inv_btn = (Button) findViewById(R.id.invite);
-		
+
+		inv_btn.setVisibility(View.INVISIBLE);
+
 		pick_number = (Button) findViewById(R.id.pick);
-		
+
+		pick_number.setVisibility(View.INVISIBLE);
+
 		end_btn = (Button) findViewById(R.id.end_btn);
-		
+
+		if (ovxView.isCallOn()) {
+			end_btn.setVisibility(View.VISIBLE);
+		}
 		/* OnClick action to pick number from address book */
 
 		end_btn.setOnClickListener(new OnClickListener()
@@ -242,14 +257,13 @@ public class EngageChat extends Activity
 			public void onClick(View v)
 			{
 
-				if(ovxView.isCallOn())
-				{
+				if (ovxView.isCallOn()) {
 					ovxView.exitCall();
 				}
 
 			}
 		});
-		
+
 		pick_number.setOnClickListener(new OnClickListener()
 		{
 
@@ -262,18 +276,32 @@ public class EngageChat extends Activity
 			}
 		});
 
-		/* onClick action to register */
 		if (OPXApplication.getOPXUsername() != null) {
+
 			ovx_text.setEnabled(true);
 			ovx_text.setText(OPXApplication.getOPXUsername());
-			inv_text.setVisibility(View.VISIBLE);
+			if (!ovxView.isOPXRegistered())
+				inv_text.setVisibility(View.INVISIBLE);
+			else
+				inv_text.setVisibility(View.VISIBLE);
+
 			disp_name.setText(ovxView.getOvxUserName());
+
 			inv_text.setEnabled(true);
 
-			inv_btn.setVisibility(View.VISIBLE);
-			pick_number.setVisibility(View.VISIBLE);
+			if (!ovxView.isOPXRegistered())
+				inv_btn.setVisibility(View.INVISIBLE);
+			else
+				inv_btn.setVisibility(View.VISIBLE);
+
+			if (!ovxView.isOPXRegistered())
+				pick_number.setVisibility(View.INVISIBLE);
+			else
+				pick_number.setVisibility(View.VISIBLE);
+
 		}
 
+		/* onClick action to register */
 		register = (Button) findViewById(R.id.reg_btn);
 		register.setOnClickListener(new OnClickListener()
 		{
@@ -295,27 +323,36 @@ public class EngageChat extends Activity
 						 */
 
 						if (disp_name.getText().toString().trim().equals(""))
-							ovxView.setKeyValue("ovx-name", ovx_text.getText()
+							ovxView.setParameter("ovx-name", ovx_text.getText()
 									.toString());
 						else
-							ovxView.setKeyValue("ovx-name", disp_name.getText()
-									.toString());
+							ovxView.setParameter("ovx-name", disp_name
+									.getText().toString());
 
 						OPXApplication.setOPXUsername(ovx_text.getText()
 								.toString());
 						SessionManager.createAccountSession(ovx_text.getText()
 								.toString());
 
-						OPX.register_opx(ovxView);
+						// ovxView.setUserLogin(entered_number,"email",disp_name.getText().toString(),disp_name.getText().toString(),"","myAPIKey");//
+						// type
+						if (isValidEmail(entered_number))
+							ovxView.setUserLogin(entered_number, "email");// type
+						if ((containsOnlyDigits(entered_number) && isValidPhoneNumber(entered_number)))
+							ovxView.setUserLogin(entered_number, "sms");// ,disp_name.getText().toString(),disp_name.getText().toString(),"","myAPIKey");//
+																		// type
+
+						// email
+						// or
+						// sms
+						// can
+						// be
+						// used..
+
 						Log.d("INDUS",
 								"Registered Name: " + ovxView.getOvxUserName());
 
-						Intent mAlarmIntent = new Intent(currentActivity,
-								OPXAlarmManager.class);
-						
-						stopService(mAlarmIntent);
-						sendBroadcast(mAlarmIntent);
-						
+						Log.d("INDUS", "Starting intent to start service");
 
 					} catch (OVXException e) {
 						// TODO Auto-generated catch block
@@ -323,8 +360,9 @@ public class EngageChat extends Activity
 					}
 
 				else
-					Toast.makeText(currentActivity, "Enter Correct Number or Email",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(currentActivity,
+							"Enter Correct Number or Email", Toast.LENGTH_LONG)
+							.show();
 
 			}
 		});
@@ -338,12 +376,11 @@ public class EngageChat extends Activity
 			public void onClick(View v)
 			{
 
-				if (!inv_text.getText().toString().trim().equals(""))
-				{
-					if(!ovxView.isCallOn())
-					OPX.invite_request(ovxView, inv_text.getText().toString());
-					else
-					{
+				if (!inv_text.getText().toString().trim().equals("")) {
+					if (!ovxView.isCallOn())
+						OPX.invite_request(ovxView, inv_text.getText()
+								.toString());
+					else {
 						CharSequence[] ch = { "Call is already Active" };
 						showDialog("Engage Chat", ch);
 					}
@@ -415,12 +452,12 @@ public class EngageChat extends Activity
 		String action = (String) intent.getExtras().get("notification");
 		if (action.equals("answer")) {
 			OPXListener.cancelNotification();
+
 			String sessionId = (String) intent.getExtras().get("sessionId");
 			String peer = (String) intent.getExtras().get("peer");
-			ovxView.setKeyValue("ovx-session", sessionId);
+			ovxView.setParameter("ovx-session", sessionId);
 			OPX.invite_accept(ovxView, peer, sessionId);
 			ovxView.call();
-			
 
 		}
 	}
@@ -489,9 +526,8 @@ public class EngageChat extends Activity
 			contact_number = contact_number.replace("+", "");
 		}
 
-		
 		inv_text.setText(contact_number);
-		
+
 	}
 
 	public boolean isValidPhoneNumber(CharSequence phoneNumber)
@@ -539,7 +575,6 @@ public class EngageChat extends Activity
 		// TODO Auto-generated method stub
 
 		if (hasFocus)
-
 			ovxView.updateVideoOrientation();
 
 		Log.d("OVX", "OnWindow Focus calling  updateVideo Orientation");
@@ -554,14 +589,8 @@ public class EngageChat extends Activity
 		Log.d("OVX", "onConfigurationChanged() Called");
 		super.onConfigurationChanged(newConfig);
 
-		try {
-			ovxView.setRemoteViewX(100);
-			ovxView.setRemoteViewY(100);
-
-		} catch (OVXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		ovxView.setRemoteViewX(100);
+		ovxView.setRemoteViewY(100);
 
 		/*
 		 * Should be called to update the dimensions and position of the video
@@ -590,12 +619,13 @@ public class EngageChat extends Activity
 
 	// generic dialog used to display messages
 
-	
-	static boolean isTablet(Context context) {
+	static boolean isTablet(Context context)
+	{
 		boolean xlarge = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == 4);
 		boolean large = ((context.getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE);
 		return (xlarge || large);
 	}
+
 	public void showDialog(String title, String session_id, String peer)
 	{
 
@@ -618,19 +648,25 @@ public class EngageChat extends Activity
 
 							}
 
+							if (notmgr != null) {
+								notmgr.cancel(0);
+							}
+
 							/*
 							 * Before accepting have to set the groupid to
 							 * connect in to the same room
 							 */
 
-							ovxView.setKeyValue("ovx_session", sessvalue);
+							ovxView.setParameter("ovx_session", sessvalue);
 
 							accepted_rejectedclicked = true;
 
 							OPX.invite_accept(ovxView, peername, sessvalue);
 							ovxView.call();
-							chat_box.append("\n"+"OPX:Sending Accept Request");
-							
+							chat_box.append("\n"
+									+ "OPX:Invite Request accepted by "
+									+ peername + "\n");
+
 						}
 
 						catch (OVXException e) {
@@ -649,11 +685,15 @@ public class EngageChat extends Activity
 							player.stop();
 
 						}
+						if (notmgr != null) {
+							notmgr.cancel(0);
+						}
 						accepted_rejectedclicked = true;
 
 						OPX.invite_rejected(ovxView, peername, sessvalue);
 
-						chat_box.append("\n"+"OPX:Sending Reject Request");
+						chat_box.append("\n" + "OPX:Sending Reject Request"
+								+ "\n");
 					}
 				});
 
@@ -681,6 +721,9 @@ public class EngageChat extends Activity
 					}
 					ad_dialog.dismiss();
 
+					if (notmgr != null) {
+						notmgr.cancel(0);
+					}
 					OPX.invite_expired(ovxView, peername, sessvalue);
 
 					Toast.makeText(currentActivity,
@@ -751,10 +794,10 @@ public class EngageChat extends Activity
 			{
 				Log.d("OVX", "Call Started");
 
-					
 				if (end_call) {
 					if (ovxView.isCallOn()) {
 						ovxView.exitCall();
+						return;
 					}
 				}
 				end_btn.setVisibility(View.VISIBLE);
@@ -870,8 +913,101 @@ public class EngageChat extends Activity
 			 */
 
 			@Override
-			public void handlePeerMessage(String arg0)
+			public void opxAuthenticationFailed(String arg0)
 			{
+				// TODO Auto-generated method stub
+				runOnUiThread(new Runnable()
+				{
+					public void run()
+					{
+
+						inv_text.setVisibility(View.INVISIBLE);
+
+						inv_btn.setVisibility(View.INVISIBLE);
+
+						pick_number.setVisibility(View.INVISIBLE);
+						chat_box.append("\n" + "Authentication Failed");
+
+					}
+				});
+
+			}
+
+			@Override
+			public void opxConnectionClosed(int arg0, String arg1)
+			{
+				// TODO Auto-generated method stub
+				runOnUiThread(new Runnable()
+				{
+					public void run()
+					{
+
+						inv_text.setVisibility(View.INVISIBLE);
+
+						inv_btn.setVisibility(View.INVISIBLE);
+
+						pick_number.setVisibility(View.INVISIBLE);
+						chat_box.append("\n" + "Connection Closed" + "\n");
+
+					}
+				});
+			}
+
+			@Override
+			public void opxConnectionFailed(String arg0)
+			{
+				// TODO Auto-generated method stub
+
+				runOnUiThread(new Runnable()
+				{
+					public void run()
+					{
+
+						inv_text.setVisibility(View.INVISIBLE);
+
+						inv_btn.setVisibility(View.INVISIBLE);
+
+						pick_number.setVisibility(View.INVISIBLE);
+						chat_box.append("\n" + "Connection failed" + "\n");
+
+					}
+				});
+
+			}
+
+			@Override
+			public void opxConnectionReady()
+			{
+				// TODO Auto-generated method stub
+
+				Log.d("INDUS", "Connection Ready");
+				runOnUiThread(new Runnable()
+				{
+
+					@Override
+					public void run()
+					{
+						inv_text.setVisibility(View.VISIBLE);
+						ovx_text.setEnabled(true);
+						inv_text.setEnabled(true);
+
+						inv_btn.setVisibility(View.VISIBLE);
+						pick_number.setVisibility(View.VISIBLE);
+
+						chat_box.append("OPX-"
+								+ OPXApplication.getOPXUsername()
+								+ " Registered  " + "\n");
+
+					}
+				});
+
+			}
+
+			@Override
+			public void opxDidReceiveMessage(String arg0)
+			{
+				// TODO Auto-generated method stub
+
 				Log.d("INDUS", "Peer Message Receiving:" + arg0);
 
 				// lmenu = new AlertDialog.Builder(currentActivity);
@@ -893,6 +1029,8 @@ public class EngageChat extends Activity
 					msg_type = (String) request.get("msgtype");
 
 					fromid = (String) request.get("fromid");
+					if (fromid.equals("SERVER"))
+						return;
 
 					apiKey = fromid.split(":")[0];
 					peerName = fromid.split(":")[1];
@@ -965,8 +1103,9 @@ public class EngageChat extends Activity
 
 								CharSequence[] ch = { "Call has been Rejected" };
 								showDialog("Engage Chat", ch);
-								chat_box.append("\n" + "OPX:" + peername
-										+ "Rejected your request ");
+								chat_box.append("\n" + "OPX:"
+										+ "Invite Request rejected by"
+										+ peername + "\n");
 							}
 						});
 
@@ -994,6 +1133,9 @@ public class EngageChat extends Activity
 									play_audio();
 									showDialog("Engage Chat", sessvalue,
 											peername);
+
+									launchNtfctn(peername, sessvalue);
+
 								} else {
 									/*
 									 * When call is already on send expired
@@ -1043,6 +1185,8 @@ public class EngageChat extends Activity
 				}
 
 				else if (msg_type.equals("MSG_RESPONSE")) {
+
+					Log.d("INDUS", "Message Response:" + arg0);
 					final String session_id = sessionId;
 
 					try {
@@ -1087,9 +1231,10 @@ public class EngageChat extends Activity
 						if (invite_msgtype.contains("INVITE_REQUEST")) {
 							try {
 								ovxView.setLatency(0);
-								ovxView.setKeyValue("ovx-session", session_id);
+								ovxView.setParameter("ovx-session", session_id);
 								ovxView.call();
-								Log.d("INDUS","Call Status:"+ovxView.isCallOn());
+								Log.d("INDUS",
+										"Call Status:" + ovxView.isCallOn());
 							} catch (OVXException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -1100,48 +1245,6 @@ public class EngageChat extends Activity
 						}
 					}
 				}
-
-			}
-
-			/*
-			 * OPX call back invoked When the User registered Successfully with
-			 * server response
-			 */
-
-			@Override
-			public void handleServerMessage(String arg0)
-			{
-				// TODO Auto-generated method stub
-				JSONObject request;
-				try {
-					request = new JSONObject(arg0);
-					reg_type = (String) request.get("msgtype");
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				final String response = arg0;
-				runOnUiThread(new Runnable()
-				{
-
-					@Override
-					public void run()
-					{
-
-						inv_text.setVisibility(View.VISIBLE);
-						ovx_text.setEnabled(true);
-						inv_text.setEnabled(true);
-
-						inv_btn.setVisibility(View.VISIBLE);
-						pick_number.setVisibility(View.VISIBLE);
-
-						if (reg_type.equals("REGISTER_RESPONSE")) {
-							chat_box.append(OPXApplication.getOPXUsername()
-									+ ":Registered Successfully ");
-						}
-					}
-				});
-				Log.d("INDUS", "Server Sign in Response:" + arg0);
 
 			}
 
@@ -1183,7 +1286,6 @@ public class EngageChat extends Activity
 	@Override
 	public void onPause()
 	{
-
 		super.onPause();
 		Log.d("OVX", "On Pause");
 
@@ -1212,6 +1314,11 @@ public class EngageChat extends Activity
 	public boolean onKeyDown(int keyCode, KeyEvent event)
 	{
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+			if (notmgr != null) {
+				notmgr.cancel(0);
+			}
+
 			OPXApplication.setUIState(false);
 			OPXApplication.setOVXListener();
 			finish();
@@ -1219,6 +1326,43 @@ public class EngageChat extends Activity
 		}
 		// return false;
 		return super.onKeyDown(keyCode, event);
+	}
+
+	@SuppressWarnings("deprecation")
+	private void launchNtfctn(final String peer, final String session_id)
+	{
+		// TODO Auto-generated method stub
+		notmgr = (NotificationManager) currentActivity
+				.getSystemService(currentActivity.NOTIFICATION_SERVICE);
+
+		Intent intent = new Intent(currentActivity, EngageChat.class);
+
+		PendingIntent pi = PendingIntent.getActivity(currentActivity, 1,
+				intent, 0);
+
+		Vibrator vb = (Vibrator) currentActivity
+				.getSystemService(currentActivity.VIBRATOR_SERVICE);
+
+		long[] pattern = { 0, 100, 600, 100, 700 };
+
+		vb.vibrate(pattern, -1);
+
+		noti = new Notification(R.drawable.phoneicon, "Engage Chat",
+				System.currentTimeMillis());
+		noti.setLatestEventInfo(currentActivity, "EngageChat", peer
+				+ "  is Calling..", pi);
+
+		// noti.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		noti.number += 5;// number of times to show the icon in the status bar
+
+		noti.flags |= Notification.FLAG_SHOW_LIGHTS;// How the notifcations
+		// should be like in the
+		// seeker content after
+		// clicking ...
+		notmgr.notify(0, noti);// Using Mgr to show the
+		// notifications...
+
 	}
 
 }

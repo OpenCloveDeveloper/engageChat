@@ -41,18 +41,25 @@ public class OPXRegisterService extends Service
 		Log.d("INDUS", "onStartCommand:");
 
 		ovxview = OPXApplication.getOVXContext();
+		
 		if (ovxview != null) {
 
-			if (!ovxview.isOPXConnected() && !OPXApplication.isUiOn()
+			if (!ovxview.isOPXRegistered() && !OPXApplication.isUiOn()
 					&& SessionManager.isAccNameAvail()) {
 				Log.d("INDUS",
 						"in service ---- opx not connected ... registering opx");
 
-				// ovxview.disconnect_opx();
-				if (isNetworkAvailable(this)) {
-					ovxview.connect_opx();
+				if (isNetworkAvailable(this))
+				{
+					
+					try {
+						ovxview.opxInitiateRegister(OPXApplication.getOPXUsername());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
-					OPX.register_opx(ovxview);
+					
 				}
 			}
 			else
@@ -63,10 +70,18 @@ public class OPXRegisterService extends Service
 				{
 					if (isNetworkAvailable(this)) {
 						Log.d("INDUS",
-								"Due to Connection lost:---- opx not registered ... registering opx:");
-						ovxview.connect_opx();
+								" opx not registered ... registering opx:");
 
-						OPX.register_opx(ovxview);
+					
+						try
+						{
+							ovxview.opxInitiateRegister(OPXApplication.getOPXUsername());
+						}
+						catch (Exception e)
+						{
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 					}
 				}
 			}

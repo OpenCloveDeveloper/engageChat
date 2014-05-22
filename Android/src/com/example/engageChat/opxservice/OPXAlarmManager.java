@@ -20,8 +20,10 @@ public class OPXAlarmManager extends BroadcastReceiver
 	public void onReceive(Context context, Intent intent)
 	{
 		Log.d("INDUS", "Launching ovx service");
-/*		Toast.makeText(context, "intializing ovx service", Toast.LENGTH_LONG)
-				.show();*/
+		/*
+		 * Toast.makeText(context, "intializing ovx service", Toast.LENGTH_LONG)
+		 * .show();
+		 */
 		if (alarm_service == null)
 			alarm_service = (AlarmManager) context
 					.getSystemService(Context.ALARM_SERVICE);

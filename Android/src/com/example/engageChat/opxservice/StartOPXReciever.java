@@ -15,6 +15,7 @@ public class StartOPXReciever extends BroadcastReceiver
 		Log.d("INDUS", "onReceive: launching device tracer intent");
 
 		Intent service = new Intent(context, OPXRegisterService.class);
+		
 		context.startService(service);
 	}
 
