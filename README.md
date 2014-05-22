@@ -8,6 +8,19 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
 ### iOS Quick Start:
 
 #### Configure the Service:
+
+    iOS:
+    
+      [ovxView setParameter:@"ovx-title":@"EngageChat"];
+      [ovxView setParameter:@"ovx-apiKey":@"GET_AN_API_KEY"];
+      
+                                       @"MSG_REQUEST", @"msgtype",
+                                       @"myAppKey:user1@ovx.me", @"fromid",
+                                       @"myAppKey:user2@ovx.me", @"toid",
+                                       @"message", @"type",
+                                       @"12312",@"msgId",
+                                       @"Any Text or JSON Message",@"data",
+                                       nil];
     
     [ovxView setParameter:@"ovx-title":@"EngageChat"]
     
