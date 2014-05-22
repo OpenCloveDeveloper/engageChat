@@ -38,7 +38,7 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
 
     
 
-#### Invoke iOS Address Book, and find someone's address.
+#### Invoke the Address Book, and find someone's address.
 
 #### Invite Someone:
 
