@@ -42,7 +42,15 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
 
 #### Invite Someone:
 
-    [self sendOPXApplicationInviteMessage:@"john.doe@openclove.com"]
+    iOS:
+    
+      [self sendOPXApplicationInviteMessage:@"john.doe@openclove.com"];
+
+    Android:
+    
+      invite_request(ovxView, "janet@openclove.com");
+      
+
 
 #### Send MESSAGE REQUEST
 
