@@ -24,13 +24,19 @@ Get your own APIKey for FREE at http://developer.openclove.com and start using t
     
 
 #### Register the User:
-    
-    [ovxView setUserLogin:@"14695551212" usingType @"phone"], OR
-    
-    [ovxView setUserLogin:@"janet@openclove.com usingType @"email"], OR
-    
-    [ovxView setUserLogin:facebook usingType @"facebook"]
-    
+
+    iOS:
+    
+      [ovxView setUserLogin:@"14695551212" withType:@"sms"]; OR,
+      [ovxView setUserLogin:@"janet@openclove.com" withType:@"email"]; OR,
+      [ovxView setUserLogin:facebook withType:@"facebook"];
+      
+    Android:
+    
+      ovxView.setUserLogin("14695551212","sms") OR  
+      ovxView.setUserLogin("janet@openclove.com","email")
+
+    
 
 #### Invoke iOS Address Book, and find someone's address.
 
